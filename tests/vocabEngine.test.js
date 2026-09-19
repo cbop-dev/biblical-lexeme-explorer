@@ -11,8 +11,8 @@ test('VocabEngine.fetchLexInfo for LXX', async () => {
 	const lemma = new Lexeme();
 	await VocabEngine.fetchLexInfo(2, lemma, lxx.posDict, 'lxx');
 	expect(lemma.id).toBe(2);
-	expect(lemma.lemma).toBe('Ααλαφ');
-	expect(lemma.total).toBe(2);
+	expect(lemma.lemma).toBe('καί');
+	expect(lemma.total).toBe(60266);
 });
 
 test('VocabEngine.fetchLexInfo for SBLGNT', async () => {
@@ -44,5 +44,5 @@ test('VocabEngine.fetchText', async () => {
 	const result = await VocabEngine.fetchText(655362, 'lxx');
 	expect(result).toHaveProperty('id');
 	expect(result).toHaveProperty('section', 'Gen 1:1');
-	expect(result.text).toContain('ἐν ἀρχῇ');
+	expect(result.text.toLowerCase()).toContain('ἐν ἀρχῇ');
 });

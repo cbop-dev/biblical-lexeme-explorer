@@ -27,6 +27,12 @@ vite.config.ts.timestamp-*
 
 build-storybook.log
 
-src/routes/wc/_archive/
-
 src/lib/components/lemma2/
+
+# Python
+__pycache__/
+*.pyc
+
+# Pipeline temporary sources and build artifacts
+pipeline/build/
+pipeline/sources/

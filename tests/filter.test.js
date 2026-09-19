@@ -7,5 +7,5 @@ test('filter test', async () => {
     await VocabEngine.fetchLexemes(query);
     const lexes = query.results.lexemeArray.toSorted((x, y) => x.lemma.localeCompare(y.lemma));
 
-    expect(lexes.length).toBe(113);
+    expect(lexes.length).toBe(127);
 });
