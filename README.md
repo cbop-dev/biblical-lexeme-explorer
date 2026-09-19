@@ -74,6 +74,7 @@ graph TD
   - Autonomous open-source neural and constraint-satisfaction pipeline (`pipeline/swete_morphology/`).
   - Neural POS tagging & lemmatization: Stanford Stanza Ancient Greek `grc_proiel` model.
   - Canonical unification & deduplication: `pipeline/swete_morphology/lemma_consolidator.py`.
+  - *Benchmarking & Validation*: During development, predictions were evaluated and benchmarked against the OpenScriptorium LXX morph dataset (CC BY 4.0), but no data from OpenScriptorium was incorporated into this application's dataset.
 - **English Glosses & Concordance References**:
   - [Open Scriptures Septuagint Project](https://github.com/openscriptures/GreekResources) (Licensed under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
   - G. Abbott-Smith, *A Manual Greek Lexicon of the New Testament* (1922), Public Domain (TEI XML by [translatable-exegetical-tools/Abbott-Smith](https://github.com/translatable-exegetical-tools/Abbott-Smith)).

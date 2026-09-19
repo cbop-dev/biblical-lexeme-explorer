@@ -146,7 +146,11 @@
 				<p class="text-sm opacity-90">
 					Morphological parsing, POS tagging, and lemmatization generated via the open-source pipeline in this repository (<code>pipeline/swete_morphology/</code>). Powered by Stanford Stanza Ancient Greek neural language models (<code>grc_proiel</code>), contextual biblical proper-name gazetteers, and grammatical canonical unification algorithms.
 				</p>
+				<p class="text-xs opacity-75 mt-2">
+					<em>Benchmarking note:</em> During development and quality assurance, the pipeline's morphological outputs were tested and benchmarked against the <a href="https://github.com/OpenScriptorium/lxx-morph" target="_blank" rel="noopener noreferrer" class="font-medium">OpenScriptorium lxx-morph</a> dataset, but no data from OpenScriptorium was incorporated into this application's dataset.
+				</p>
 			</div>
+
 
 			<!-- Open Scriptures Septuagint Project -->
 			<div class="card bg-base-100 border border-base-300 p-5 shadow-xs">
