@@ -28,6 +28,11 @@ from .config import (
     RESOLVED_TOKENS_FILE,
     VERSES_FILE,
 )
+from .lemma_consolidator import (
+    build_dynamic_consolidations,
+    canonicalize_token_lemma,
+)
+
 
 GREEK_LETTERS = "αβγδεζηθικλμνξοπρστυφχψω"
 BETA_LETTERS = "abgdezhqiklmnjoprstufxyw"
@@ -136,6 +141,17 @@ def emit():
     print(f"Loading resolved tokens from {RESOLVED_TOKENS_FILE}...")
     with open(RESOLVED_TOKENS_FILE, "r", encoding="utf-8") as f:
         tokens = json.load(f)
+
+    print("Building and applying canonical lemma consolidations...")
+    consolidation_map = build_dynamic_consolidations(tokens)
+    consolidated_tokens_count = 0
+    for t in tokens:
+        orig = t.get("lemma", "")
+        canon = canonicalize_token_lemma(t, consolidation_map)
+        if canon != orig:
+            t["lemma"] = canon
+            consolidated_tokens_count += 1
+    print(f"Consolidated {consolidated_tokens_count:,} tokens across {len(consolidation_map)} lemma rules.")
 
     print(f"Loading verses from {VERSES_FILE}...")
     with open(VERSES_FILE, "r", encoding="utf-8") as f:
