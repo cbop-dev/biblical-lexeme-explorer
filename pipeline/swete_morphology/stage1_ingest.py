@@ -127,7 +127,7 @@ def ingest():
     types_counter = Counter()
     verse_tokens = defaultdict(list)
 
-    sentence_enders = {".", ";"}
+    sentence_enders = {".", ";", "·", ":"}
     prev_was_end = True
 
     with open(SWETE_WORDS_CSV, "r", encoding="utf-8") as f:

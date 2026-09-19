@@ -30,25 +30,47 @@ from .lexical_rules import (
 
 # Common words that are capitalized in Swete (e.g. at start of quotations or divine titles)
 NOT_PROPER_NAMES = {
+    # Divine titles / nouns
     "κύριος", "κυρίου", "κυρίῳ", "κύριον", "κύριε",
     "θεός", "θεοῦ", "θεῷ", "θεόν", "θεέ", "θεοί", "θεῶν",
     "ἰδού", "ἰδοὺ", "τί", "τίς", "τίνος", "τίνι", "τίνα",
     "μή", "μὴ", "οὐ", "οὐκ", "οὐχ", "οὐχί",
-    "τάδε", "οὗτος", "αὕτη", "τοῦτο", "ταῦτα",
-    "πᾶς", "πάντες", "πάντα", "πᾶσα",
-    "ἐγώ", "ἐγὼ", "σύ", "σὺ", "ἡμεῖς", "ὑμεῖς",
+    # Articles
+    "ὁ", "ἡ", "τό", "τόν", "τήν", "τοῦ", "τῆς", "τῷ", "τῇ",
+    "τούς", "τάς", "τά", "τῶν", "τοῖς", "ταῖς", "τω", "τοιν",
+    # Demonstratives & Pronouns
+    "τάδε", "οὗτος", "αὕτη", "τοῦτο", "ταῦτα", "τούτου", "ταύτης", "τούτῳ", "ταύτῃ",
+    "τοῦτον", "ταύτην", "τούτων", "τούτοις", "ταύταις", "τούτους", "ταύτας",
+    "αὐτός", "αὐτή", "αὐτό", "αὐτοῦ", "αὐτῆς", "αὐτῷ", "αὐτῇ", "αὐτόν", "αὐτήν", "αὐτῶν", "αὐτοῖς", "αὐταῖς", "αὐτούς", "αὐτάς", "αὐτά",
+    "πᾶς", "πάντες", "πάντα", "πᾶσα", "παντός", "παντί", "πᾶν",
+    "ἐγώ", "ἐγὼ", "ἐμοῦ", "μοῦ", "ἐμοί", "μοί", "ἐμέ", "μέ", "ἡμεῖς", "ἡμῶν", "ἡμῖν", "ἡμᾶς",
+    "σύ", "σὺ", "σοῦ", "σοί", "σέ", "ὑμεῖς", "ὑμῶν", "ὑμῖν", "ὑμᾶς",
+    "ὅς", "ἥ", "ὅ", "οὗ", "ἧς", "ᾧ", "ᾗ", "ὅν", "ἥν", "ὧν", "οἷς", "αἷς", "οὕς", "ἅς", "ἅ",
+    # Conjunctions & Prepositions
     "καί", "καὶ", "δέ", "δὲ", "ἀλλά", "ἀλλὰ", "ὅτι", "εἰ", "ἐάν",
     "ἐν", "εἰς", "ἐκ", "ἐξ", "πρός", "πρὸς", "ἀπό", "ἀπὸ", "ὑπό", "ὑπὸ",
     "διά", "διὰ", "μετά", "μετὰ", "κατά", "κατὰ", "ἐπί", "ἐπὶ", "περί", "περὶ",
     "σύν", "σὺν", "ἀνά", "ἀνὰ", "ὑπέρ", "ὑπὲρ", "ἕως", "πρό", "πρὸ",
-    "πρόσεχε", "ἄκουσον", "εἶπεν", "λέγει", "ἀπεκρίθη",
+    # Common verbs
+    "πρόσεχε", "ἄκουσον", "εἶπεν", "εἶπαν", "λέγει", "λέγων", "ἀπεκρίθη",
+    "ἐποίησεν", "ἔδωκεν", "ἔστιν", "ἐστιν", "ἦν", "ἦσαν", "ἐγένετο", "ἦλθεν",
+    # Common nouns
     "ἄνθρωπος", "ἄνθρωποι", "βασιλεύς", "βασιλέως", "βασιλεῖ",
     "πατήρ", "πατρός", "μήτηρ", "μητρός", "υἱός", "υἱοῦ",
     "οἶκος", "οἴκου", "πόλις", "πόλεως", "γῆ", "γῆς",
     "ἅγιος", "ἅγιοι", "ἁγίων", "δικαιοσύνη", "εἰρήνη",
 }
 
-SEMITIC_CONSONANT_ENDINGS = ("μ", "δ", "λ", "ν", "ρ", "θ", "χ", "κ", "φ", "τ", "β", "γ")
+# Consonant endings strictly typical of Semitic transliterations (excluding ν and ρ which are common Greek endings)
+SEMITIC_CONSONANT_ENDINGS = ("μ", "δ", "λ", "θ", "χ", "κ", "φ", "β", "γ")
+
+# Known Semitic indeclinable names ending in -ν
+KNOWN_SEMITIC_N_NAMES = {
+    "ααρων", "συμεων", "σολομων", "γεδεων", "σιων", "χανααν", "βαβυλων",
+    "λεβανων", "χεβρων", "ερμων", "αμαν", "λαμαν", "μαδιαν", "ωναν",
+    "φαραν", "γομορραν", "σαλμων", "ναασσων", "γιων", "βελ", "νεβρων",
+    "σαμψων", "ναν"
+}
 
 # Indeclinable names ending in vowels in LXX tradition
 INDECLI_VOWEL_NAMES = {
@@ -96,8 +118,9 @@ def build_gazetteer():
     # 2. Seed with canonical mappings
     for raw, canonical in PROPER_NOUN_CANONICAL.items():
         plain = strip_accents(raw)
-        gazetteer[raw] = {"lemma": canonical, "plain": plain, "is_indecl": True, "pos": 13}
-        gazetteer[plain] = {"lemma": canonical, "plain": plain, "is_indecl": True, "pos": 13}
+        is_indecl = canonical not in DECLINABLE_PROPER_NOUNS
+        gazetteer[raw] = {"lemma": canonical, "plain": plain, "is_indecl": is_indecl, "pos": 13}
+        gazetteer[plain] = {"lemma": canonical, "plain": plain, "is_indecl": is_indecl, "pos": 13}
 
     # 3. Detect candidate biblical names from corpus
     for surface, count in non_start_cap_counts.items():
@@ -114,8 +137,9 @@ def build_gazetteer():
         # Check for typical Semitic indeclinable endings
         is_semitic_consonant = plain.endswith(SEMITIC_CONSONANT_ENDINGS)
         is_known_vowel = plain in INDECLI_VOWEL_NAMES
+        is_known_n = plain in KNOWN_SEMITIC_N_NAMES
 
-        if is_semitic_consonant or is_known_vowel:
+        if is_semitic_consonant or is_known_vowel or is_known_n:
             # Canonicalize lemma to standard titlecase with acute/tonos
             canonical = PROPER_NOUN_CANONICAL.get(surface, surface)
             gazetteer[surface] = {

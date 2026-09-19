@@ -2017,7 +2017,7 @@ class LxxVocabDataset extends VocabDataset {
         this.posGroups = LxxVocabDataset.posGroups;
         this.posGroupsUIDesc = LxxVocabDataset.posGroupsUIDesc;
         this.lexStats.totalWords = 608833;
-        this.lexStats.totalLexemes = 21031;
+        this.lexStats.totalLexemes = 20775;
         this.lexemes = lxxLexemes;
     }
 }
