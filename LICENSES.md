@@ -74,6 +74,10 @@ This project is deeply grateful to the open-source and digital humanities projec
   - **Source**: [https://openscriptorium.org](https://openscriptorium.org)
   - **Description**: Contrast-invariant piecewise color stop interpolation algorithm and sliding scale reading theme selector concept.
 
+### AI Engineering & Development Tools
+- **Google DeepMind Antigravity 2.0 & Gemini**:
+  - The application developer used Google DeepMind's Antigravity 2.0 and Gemini models in the development of this project.
+
 ---
 
 ## 4. Third-Party Code & Dependencies

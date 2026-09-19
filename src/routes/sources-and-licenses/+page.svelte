@@ -260,7 +260,19 @@
 					> (licensed under the permissive <a href="https://opensource.org/licenses/ISC" target="_blank" rel="noopener noreferrer" class="font-medium">ISC License</a>).
 				</p>
 			</div>
+
+			<!-- AI Development & Methodology -->
+			<div id="ai-attribution" class="card bg-base-100 border border-base-300 p-5 shadow-xs">
+				<div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+					<h3 class="text-lg font-bold">Google DeepMind Antigravity 2.0 &amp; Gemini</h3>
+					<span class="text-xs badge badge-ghost font-mono">AI Engineering &amp; Development</span>
+				</div>
+				<p class="text-sm opacity-90">
+					The application developer used Google DeepMind's Antigravity 2.0 and Gemini models in the development of this project.
+				</p>
+			</div>
 		</div>
+
 	</section>
 
 	<!-- Copyright Notice -->

@@ -58,8 +58,11 @@
 				<span class="opacity-40">|</span>
 				<a href="{base}/sources-and-licenses" class="link font-semibold">Sources &amp; Licenses</a>
 				<span class="opacity-40">•</span>
+				<span>AI-assisted with <a href="{base}/sources-and-licenses#ai-attribution" class="link">Antigravity 2.0 &amp; Gemini</a></span>
+				<span class="opacity-40">•</span>
 				<a href="{APP_REPO}" target="_blank" rel="noopener noreferrer" class="link">GitHub</a>
 			</div>
+
 
 			<!-- Right: Sliding scale reading theme selector -->
 			<div class="theme-control shrink-0">

@@ -85,8 +85,11 @@ graph TD
   - SBL Greek New Testament & MorphGNT (CC BY 4.0).
 - **UI Architecture**:
   - OpenScriptorium reading theme selector and contrast-invariant color stop interpolation pattern (ISC License).
+- **AI Engineering & Development**:
+  - The application developer used Google DeepMind's Antigravity 2.0 and Gemini models in the development of this project.
 
 ---
+
 
 ## Licensing Terms
 
