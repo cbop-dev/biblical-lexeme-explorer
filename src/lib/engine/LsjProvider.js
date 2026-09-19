@@ -10,7 +10,7 @@ const GREEK_BUCKET_MAP = {
 	'ω': 'omega'
 };
 
-const GREEK_DIAC_REGEX = /[\u0300-\u036f\u0313\u0314\u0342\u0345\u0308']+/g;
+const GREEK_DIAC_REGEX = /[\u0300-\u036f\u0313\u0314\u0342\u0345\u0308'⸂⸃⸆⸇⸀⸁⸄⸅⸈⸉⸊⸋\[\]⟦⟧⟨⟩\(\)†‡*0-9\s.,;·:!?\-—]+/gu;
 
 /**
  * Normalizes polytonic Greek text: NFD, removes vowel length marks

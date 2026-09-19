@@ -25,5 +25,5 @@ test('fetchLexes-unique', async () => {
     query.sections = [623694, 623695];
     query.unique = true;
     await VocabEngine.fetchLexemes(query);
-    expect(query.results.lexemeArray.length).toBe(864);
+    expect(query.results.lexemeArray.length).toBe(832);
 });

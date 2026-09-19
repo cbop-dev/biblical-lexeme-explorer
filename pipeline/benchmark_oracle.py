@@ -16,6 +16,8 @@ from collections import Counter, defaultdict
 from difflib import SequenceMatcher
 from pathlib import Path
 
+from pipeline.swete_morphology.lexical_canon import are_lexically_equivalent
+
 REPO_ROOT = Path(__file__).resolve().parent.parent
 BUILD_DIR = REPO_ROOT / "pipeline" / "build"
 RESOLVED_TOKENS_FILE = BUILD_DIR / "swete_resolved_tokens.json"
@@ -154,17 +156,19 @@ def benchmark(books: list[str], top_n: int = 25):
 
     target_books = list(BOOK_TO_ORACLE_FILE.keys()) if "all" in [b.lower() for b in books] else books
 
+
     overall_swete_tokens = 0
     overall_aligned_tokens = 0
     overall_exact_lemma = 0
     overall_plain_lemma = 0
+    overall_equiv_lemma = 0
     overall_discrepancies = Counter()
     category_counter = Counter()
 
     print(f"\nEvaluating {len(target_books)} book(s)...")
-    print("-" * 75)
-    print(f"{'Book':<8} | {'Swete':<7} | {'Aligned':<7} | {'Exact Lemma':<15} | {'Plain Lemma':<15}")
-    print("-" * 75)
+    print("-" * 95)
+    print(f"{'Book':<8} | {'Swete':<7} | {'Aligned':<7} | {'Exact Lemma (T1)':<17} | {'Plain Lemma (T2)':<17} | {'Equivalent (T3)':<17}")
+    print("-" * 95)
 
     for b in target_books:
         canon_b = BOOK_ALIAS_MAP.get(b, b)
@@ -180,6 +184,7 @@ def benchmark(books: list[str], top_n: int = 25):
         b_aligned = 0
         b_exact_lemma = 0
         b_plain_lemma = 0
+        b_equiv_lemma = 0
 
         for ref, s_toks in s_verses.items():
             if ref not in o_verses:
@@ -202,10 +207,16 @@ def benchmark(books: list[str], top_n: int = 25):
                         s_norm = strip_accents(s_lem)
                         o_norm = strip_accents(o_lem)
 
-                        if s_lem == o_lem:
+                        is_exact = (s_lem == o_lem)
+                        is_plain = (s_norm == o_norm)
+                        is_equiv = is_plain or are_lexically_equivalent(s_lem, o_lem)
+
+                        if is_exact:
                             b_exact_lemma += 1
-                        if s_norm == o_norm:
+                        if is_plain:
                             b_plain_lemma += 1
+                        if is_equiv:
+                            b_equiv_lemma += 1
                         else:
                             pair = (st["surface"], s_lem, o_lem)
                             overall_discrepancies[pair] += 1
@@ -218,34 +229,38 @@ def benchmark(books: list[str], top_n: int = 25):
                             elif s_lem in ("ὁ", "ὅς", "οὗτος", "αὐτός", "τίς", "τις") or o_lem in ("ὁ", "ὅς", "οὗτος", "αὐτός", "τίς", "τις"):
                                 category_counter["pronoun_article_distinction"] += 1
                             else:
-                                category_counter["lexical_or_inflectional_variation"] += 1
+                                category_counter["lexical_or_morphological_error"] += 1
 
         overall_swete_tokens += b_swete_count
         overall_aligned_tokens += b_aligned
         overall_exact_lemma += b_exact_lemma
         overall_plain_lemma += b_plain_lemma
+        overall_equiv_lemma += b_equiv_lemma
 
         exact_pct = (b_exact_lemma / b_aligned * 100) if b_aligned else 0
         plain_pct = (b_plain_lemma / b_aligned * 100) if b_aligned else 0
+        equiv_pct = (b_equiv_lemma / b_aligned * 100) if b_aligned else 0
         align_pct = (b_aligned / b_swete_count * 100) if b_swete_count else 0
 
-        print(f"{canon_b:<8} | {b_swete_count:<7} | {b_aligned:<7} ({align_pct:.1f}%) | {b_exact_lemma:<6} ({exact_pct:.2f}%) | {b_plain_lemma:<6} ({plain_pct:.2f}%)")
+        print(f"{canon_b:<8} | {b_swete_count:<7} | {b_aligned:<7} ({align_pct:.1f}%) | {b_exact_lemma:<5} ({exact_pct:.2f}%) | {b_plain_lemma:<5} ({plain_pct:.2f}%) | {b_equiv_lemma:<5} ({equiv_pct:.2f}%)")
 
-    print("-" * 75)
+    print("-" * 95)
     tot_exact_pct = (overall_exact_lemma / overall_aligned_tokens * 100) if overall_aligned_tokens else 0
     tot_plain_pct = (overall_plain_lemma / overall_aligned_tokens * 100) if overall_aligned_tokens else 0
+    tot_equiv_pct = (overall_equiv_lemma / overall_aligned_tokens * 100) if overall_aligned_tokens else 0
     tot_align_pct = (overall_aligned_tokens / overall_swete_tokens * 100) if overall_swete_tokens else 0
-    print(f"{'TOTAL':<8} | {overall_swete_tokens:<7} | {overall_aligned_tokens:<7} ({tot_align_pct:.1f}%) | {overall_exact_lemma:<6} ({tot_exact_pct:.2f}%) | {overall_plain_lemma:<6} ({tot_plain_pct:.2f}%)")
+    print(f"{'TOTAL':<8} | {overall_swete_tokens:<7} | {overall_aligned_tokens:<7} ({tot_align_pct:.1f}%) | {overall_exact_lemma:<5} ({tot_exact_pct:.2f}%) | {overall_plain_lemma:<5} ({tot_plain_pct:.2f}%) | {overall_equiv_lemma:<5} ({tot_equiv_pct:.2f}%)")
 
-    print("\nDiscrepancy Category Breakdown:")
+    print("\nRemaining Discrepancy Breakdown:")
     total_disc = sum(category_counter.values())
     for cat, count in category_counter.most_common():
         print(f"  {cat:<45}: {count:6d} ({count / total_disc * 100:.1f}%)")
 
     print(f"\nTop {top_n} Discrepancy Patterns (Surface | Swete Lemma | Oracle Lemma | Frequency):")
-    print("-" * 75)
+    print("-" * 95)
     for (surf, s_lem, o_lem), count in overall_discrepancies.most_common(top_n):
-        print(f"  {surf:<15} | {s_lem:<15} | {o_lem:<15} | {count:4d}")
+        print(f"  {surf:<18} | {s_lem:<18} | {o_lem:<18} | {count:4d}")
+
 
 
 def main():

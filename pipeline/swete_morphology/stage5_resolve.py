@@ -29,8 +29,10 @@ from .lexical_rules import (
     DECLINABLE_PROPER_NOUNS,
     DEPONENT_FIXES,
     PROPER_NOUN_CANONICAL,
+    SURFACE_LEMMA_OVERRIDES,
     UPOS_TO_APP_POS,
 )
+
 
 STANZA_OUT_FILE = BUILD_DIR / "swete_stanza.json"
 
@@ -59,6 +61,9 @@ RELATIVE_PRONOUN_SURFACES = {
 }
 
 
+EDITORIAL_CHARS = set("⸂⸃⸆⸇⸀⸁⸄⸅⸈⸉⸊⸋[]⟦⟧⟨⟩⟪⟫()†‡*0123456789")
+
+
 def resolve():
     BUILD_DIR.mkdir(parents=True, exist_ok=True)
     print("Loading tokens from Stage 1...")
@@ -85,7 +90,8 @@ def resolve():
         is_start = t["is_sentence_start"]
 
         stanza_info = stanza_preds.get(t_id, {})
-        s_lemma = stanza_info.get("lemma", surface.lower())
+        s_lemma_raw = stanza_info.get("lemma", surface.lower())
+        s_lemma = "".join(c for c in s_lemma_raw if c not in EDITORIAL_CHARS) or surface.lower()
         s_pos = stanza_info.get("pos", 15)
         s_morph = stanza_info.get("morph", "X")
         s_upos = stanza_info.get("upos", "X")
@@ -107,8 +113,25 @@ def resolve():
         if norm.startswith("παρεμβαλλ") and s_lemma_clean == "παραβάλλω":
             s_lemma_clean = "παρεμβάλλω"
 
+        # Normalize feminine adjective citation back to masculine
+        if (s_upos == "ADJ" or s_pos == 0) and not s_lemma_clean.endswith("αῖος"):
+            if s_lemma_clean.endswith("ή"):
+                s_lemma_clean = s_lemma_clean[:-1] + "ός"
+            elif s_lemma_clean.endswith("ῆ"):
+                s_lemma_clean = s_lemma_clean[:-1] + "οῦς"
+
+        # 0. High-confidence surface overrides (imperatives, irregular verbs, blindspots)
+        if surface in SURFACE_LEMMA_OVERRIDES:
+            ov = SURFACE_LEMMA_OVERRIDES[surface]
+            lemma = ov["lemma"]
+            pos = ov["pos"]
+            morph = ov.get("morph", s_morph)
+            confidence = 0.99
+            source = "surface_override"
+            stats["surface_override"] += 1
+
         # 1. Definite Article check (exact surfaces only)
-        if surface in ARTICLE_SURFACES or (s_lemma == "ὁ" and s_upos == "DET"):
+        elif surface in ARTICLE_SURFACES or (s_lemma == "ὁ" and s_upos == "DET"):
             lemma = "ὁ"
             pos = 6  # ARTICLE
             morph = s_morph if (s_morph.startswith("RA") or s_morph.startswith("D-")) else "RA"
@@ -118,6 +141,7 @@ def resolve():
 
         # 2. Relative Pronoun check
         elif surface in RELATIVE_PRONOUN_SURFACES or s_lemma in ("ὅς", "ὁς") or (s_upos == "PRON" and s_lemma_clean in ("ὅς", "ὁς")):
+
             lemma = "ὅς"
             pos = 10  # PRONOUN_RELA
             morph = s_morph if s_morph.startswith("R-") else "R-NSM"
@@ -248,13 +272,23 @@ def resolve():
                 source = "gazetteer_mid_sentence"
                 stats["proper_name"] += 1
             elif s_upos == "PROPN" or s_pos == 13:
-                propn_lemma = PROPER_NOUN_CANONICAL.get(surface) or PROPER_NOUN_CANONICAL.get(s_lemma_clean) or s_lemma_clean
-                lemma = propn_lemma if propn_lemma else surface
-                pos = 13
-                morph = s_morph if s_morph.startswith("N-") else "N-PR"
-                confidence = 0.90
-                source = "stanza_proper_name"
-                stats["proper_name"] += 1
+                # Preserve indeclinable Semitic names rather than forcing pseudo-Greek declensions
+                if any(surface.endswith(end) for end in ("ην", "αμ", "ωθ", "ωρ", "ειμ", "ουδ", "εε", "αθ", "αχ", "αδ", "ουρ")):
+                    lemma = surface
+                    pos = 13
+                    morph = "N-PRI"
+                    confidence = 0.98
+                    source = "semitic_proper_name"
+                    stats["proper_name"] += 1
+                else:
+                    propn_lemma = PROPER_NOUN_CANONICAL.get(surface) or PROPER_NOUN_CANONICAL.get(s_lemma_clean) or s_lemma_clean
+                    lemma = propn_lemma if propn_lemma else surface
+                    pos = 13
+                    morph = s_morph if s_morph.startswith("N-") else "N-PR"
+                    confidence = 0.90
+                    source = "stanza_proper_name"
+                    stats["proper_name"] += 1
+
             else:
                 lemma = s_lemma_clean
                 pos = s_pos
@@ -271,6 +305,8 @@ def resolve():
             confidence = 0.95 if s_upos != "X" else 0.70
             source = "stanza_neural"
             stats["stanza_neural"] += 1
+
+        lemma = "".join(c for c in lemma if c not in EDITORIAL_CHARS) or surface
 
         resolved_token = {
             "id": t["id"],

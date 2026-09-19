@@ -57,8 +57,13 @@ ALL_CAPS_NORMALIZATIONS = {
     "ΕΤΟΥΣ": "Ἔτους",
 }
 
-PUNCTUATION_CHARS = ".,;·:!?᾽’”“()[]—-«»"
+PUNCTUATION_CHARS = ".,;·:!?᾽’”“«»-—"
+EDITORIAL_CHARS = set("⸂⸃⸆⸇⸀⸁⸄⸅⸈⸉⸊⸋[]⟦⟧⟨⟩⟪⟫()†‡*0123456789")
 GREEK_DIAC_REGEX = re.compile(r"[\u0300-\u036f\u0313\u0314\u0342\u0345\u0308']+")
+
+
+def has_greek_letters(text: str) -> bool:
+    return any(("\u0370" <= c <= "\u03FF") or ("\u1F00" <= c <= "\u1FFF") for c in text)
 
 
 def strip_accents(text: str) -> str:
@@ -144,23 +149,38 @@ def ingest():
                 idx = 0
             _, book, chap, verse, ref_str = intervals[idx]
 
+            # If the token contains NO Greek letters (e.g. standalone critical signs '⸆', '⸂⸆⸃', footnote numbers '[1]', or lone punctuation)
+            if not has_greek_letters(raw_token):
+                stray_punct = "".join(c for c in raw_token if c in PUNCTUATION_CHARS or c in sentence_enders)
+                if stray_punct and tokens:
+                    tokens[-1]["punct"] += stray_punct
+                    if verse_tokens[ref_str]:
+                        verse_tokens[ref_str][-1] += stray_punct
+                if any(p in sentence_enders for p in raw_token):
+                    prev_was_end = True
+                continue
+
             # Separate word and trailing punctuation
             raw_clean = raw_token.rstrip(PUNCTUATION_CHARS)
             punct = raw_token[len(raw_clean):]
 
-            # If the token was ONLY punctuation (e.g. standalone '·' or ','), attach to previous token
-            if not raw_clean:
-                if tokens:
-                    tokens[-1]["punct"] += raw_token
+            # Strip all editorial signs, brackets, and footnote digits from word
+            clean_word = "".join(c for c in raw_clean if c not in EDITORIAL_CHARS).lstrip(PUNCTUATION_CHARS)
+
+            if not clean_word or not has_greek_letters(clean_word):
+                if punct and tokens:
+                    tokens[-1]["punct"] += punct
                     if verse_tokens[ref_str]:
-                        verse_tokens[ref_str][-1] += raw_token
+                        verse_tokens[ref_str][-1] += punct
+                if any(p in sentence_enders for p in punct):
+                    prev_was_end = True
                 continue
 
             # Normalize decorative all-caps if applicable
-            if raw_clean in ALL_CAPS_NORMALIZATIONS:
-                surface = ALL_CAPS_NORMALIZATIONS[raw_clean]
+            if clean_word in ALL_CAPS_NORMALIZATIONS:
+                surface = ALL_CAPS_NORMALIZATIONS[clean_word]
             else:
-                surface = unicodedata.normalize("NFC", raw_clean)
+                surface = unicodedata.normalize("NFC", clean_word)
 
             norm = strip_accents(surface)
             is_cap = bool(surface and surface[0].isupper() and not surface.isupper())

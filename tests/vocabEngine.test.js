@@ -12,7 +12,7 @@ test('VocabEngine.fetchLexInfo for LXX', async () => {
 	await VocabEngine.fetchLexInfo(2, lemma, lxx.posDict, 'lxx');
 	expect(lemma.id).toBe(2);
 	expect(lemma.lemma).toBe('καί');
-	expect(lemma.total).toBe(60302);
+	expect(lemma.total).toBe(60306);
 });
 
 test('VocabEngine.fetchLexInfo for SBLGNT', async () => {

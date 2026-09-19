@@ -3,7 +3,7 @@
     "name": "Gen",
     "abbrev": "Gen",
     "node": 623694,
-    "words": 32757,
+    "words": 32635,
     "chapters": {
       "623751": "1",
       "623752": "2",
@@ -61,7 +61,7 @@
     "name": "Exod",
     "abbrev": "Exod",
     "node": 623695,
-    "words": 24656,
+    "words": 24647,
     "chapters": {
       "623801": "1",
       "623802": "2",
@@ -109,7 +109,7 @@
     "name": "Lev",
     "abbrev": "Lev",
     "node": 623696,
-    "words": 19044,
+    "words": 19042,
     "chapters": {
       "623841": "1",
       "623842": "2",
@@ -144,7 +144,7 @@
     "name": "Num",
     "abbrev": "Num",
     "node": 623697,
-    "words": 24989,
+    "words": 24973,
     "chapters": {
       "623868": "1",
       "623869": "2",
@@ -188,7 +188,7 @@
     "name": "Deut",
     "abbrev": "Deut",
     "node": 623698,
-    "words": 22503,
+    "words": 22501,
     "chapters": {
       "623904": "1",
       "623905": "2",
@@ -230,7 +230,7 @@
     "name": "Josh",
     "abbrev": "Josh",
     "node": 623699,
-    "words": 14836,
+    "words": 14815,
     "chapters": {
       "623938": "1",
       "623939": "2",
@@ -303,7 +303,7 @@
     "name": "1Kgdms",
     "abbrev": "1Kgdms",
     "node": 623702,
-    "words": 20048,
+    "words": 20044,
     "chapters": {
       "623987": "1",
       "623988": "2",
@@ -342,7 +342,7 @@
     "name": "2Kgdms",
     "abbrev": "2Kgdms",
     "node": 623703,
-    "words": 17911,
+    "words": 17906,
     "chapters": {
       "624018": "1",
       "624019": "2",
@@ -374,7 +374,7 @@
     "name": "3Kgdms",
     "abbrev": "3Kgdms",
     "node": 623704,
-    "words": 20493,
+    "words": 20436,
     "chapters": {
       "624042": "1",
       "624043": "2",
@@ -404,7 +404,7 @@
     "name": "4Kgdms",
     "abbrev": "4Kgdms",
     "node": 623705,
-    "words": 18622,
+    "words": 18618,
     "chapters": {
       "624064": "1",
       "624065": "2",
@@ -437,7 +437,7 @@
     "name": "1Chr",
     "abbrev": "1Chr",
     "node": 623706,
-    "words": 15969,
+    "words": 15967,
     "chapters": {
       "624089": "1",
       "624090": "2",
@@ -474,7 +474,7 @@
     "name": "2Chr",
     "abbrev": "2Chr",
     "node": 623707,
-    "words": 21071,
+    "words": 21059,
     "chapters": {
       "624118": "1",
       "624119": "2",
@@ -535,7 +535,7 @@
     "name": "2Esdr",
     "abbrev": "2Esdr",
     "node": 623709,
-    "words": 12669,
+    "words": 12668,
     "chapters": {
       "624163": "1",
       "624164": "2",
@@ -556,7 +556,7 @@
     "name": "Esth",
     "abbrev": "Esth",
     "node": 623710,
-    "words": 5936,
+    "words": 5830,
     "chapters": {
       "624176": "1",
       "624177": "2",
@@ -574,7 +574,7 @@
     "name": "Jdt",
     "abbrev": "Jdt",
     "node": 623711,
-    "words": 9099,
+    "words": 9097,
     "chapters": {
       "624186": "1",
       "624187": "2",
@@ -704,7 +704,7 @@
     "name": "4Mac",
     "abbrev": "4Mac",
     "node": 623717,
-    "words": 7911,
+    "words": 7898,
     "chapters": {
       "624268": "1",
       "624269": "2",
@@ -730,7 +730,7 @@
     "name": "Ps",
     "abbrev": "Ps",
     "node": 623718,
-    "words": 34642,
+    "words": 34615,
     "chapters": {
       "624286": "1",
       "624287": "2",
@@ -889,7 +889,7 @@
     "name": "Od",
     "abbrev": "Od",
     "node": 623719,
-    "words": 4206,
+    "words": 4192,
     "chapters": {
       "624437": "1",
       "624438": "2",
@@ -911,7 +911,7 @@
     "name": "Prov",
     "abbrev": "Prov",
     "node": 623720,
-    "words": 11142,
+    "words": 11091,
     "chapters": {
       "624451": "1",
       "624452": "2",
@@ -948,7 +948,7 @@
     "name": "Qoh",
     "abbrev": "Qoh",
     "node": 623721,
-    "words": 4521,
+    "words": 4518,
     "chapters": {
       "624480": "1",
       "624481": "2",
@@ -968,7 +968,7 @@
     "name": "Cant",
     "abbrev": "Cant",
     "node": 623722,
-    "words": 1996,
+    "words": 1994,
     "chapters": {
       "624492": "1",
       "624493": "2",
@@ -984,7 +984,7 @@
     "name": "Job",
     "abbrev": "Job",
     "node": 623723,
-    "words": 13539,
+    "words": 13509,
     "chapters": {
       "624500": "1",
       "624501": "2",
@@ -1034,7 +1034,7 @@
     "name": "Wis",
     "abbrev": "Wis",
     "node": 623724,
-    "words": 6935,
+    "words": 6930,
     "chapters": {
       "624542": "1",
       "624543": "2",
@@ -1061,7 +1061,7 @@
     "name": "Sir",
     "abbrev": "Sir",
     "node": 623725,
-    "words": 18467,
+    "words": 18439,
     "chapters": {
       "624561": "1",
       "624562": "2",
@@ -1120,7 +1120,7 @@
     "name": "PsSol",
     "abbrev": "PsSol",
     "node": 623726,
-    "words": 4908,
+    "words": 4904,
     "chapters": {
       "624612": "1",
       "624613": "2",
@@ -1146,7 +1146,7 @@
     "name": "Hos",
     "abbrev": "Hos",
     "node": 623727,
-    "words": 3917,
+    "words": 3915,
     "chapters": {
       "624630": "1",
       "624631": "2",
@@ -1183,7 +1183,7 @@
     "name": "Amos",
     "abbrev": "Amos",
     "node": 623729,
-    "words": 3202,
+    "words": 3200,
     "chapters": {
       "624651": "1",
       "624652": "2",
@@ -1254,7 +1254,7 @@
     "name": "Zeph",
     "abbrev": "Zeph",
     "node": 623735,
-    "words": 1225,
+    "words": 1223,
     "chapters": {
       "624674": "1",
       "624675": "2",
@@ -1265,7 +1265,7 @@
     "name": "Hag",
     "abbrev": "Hag",
     "node": 623736,
-    "words": 950,
+    "words": 948,
     "chapters": {
       "624677": "1",
       "624678": "2"
@@ -1275,7 +1275,7 @@
     "name": "Zech",
     "abbrev": "Zech",
     "node": 623737,
-    "words": 4959,
+    "words": 4952,
     "chapters": {
       "624679": "1",
       "624680": "2",
@@ -1297,7 +1297,7 @@
     "name": "Mal",
     "abbrev": "Mal",
     "node": 623738,
-    "words": 1409,
+    "words": 1408,
     "chapters": {
       "624693": "1",
       "624694": "2",
@@ -1309,7 +1309,7 @@
     "name": "Isa",
     "abbrev": "Isa",
     "node": 623739,
-    "words": 26988,
+    "words": 26953,
     "chapters": {
       "624697": "1",
       "624698": "2",
@@ -1383,7 +1383,7 @@
     "name": "Jer",
     "abbrev": "Jer",
     "node": 623740,
-    "words": 28781,
+    "words": 28775,
     "chapters": {
       "624763": "1",
       "624764": "2",
@@ -1443,7 +1443,7 @@
     "name": "Bar",
     "abbrev": "Bar",
     "node": 623741,
-    "words": 2603,
+    "words": 2599,
     "chapters": {
       "624815": "1",
       "624816": "2",
@@ -1456,7 +1456,7 @@
     "name": "EpJer",
     "abbrev": "EpJer",
     "node": 623742,
-    "words": 1286,
+    "words": 1284,
     "chapters": {
       "624820": "1"
     }
@@ -1465,7 +1465,7 @@
     "name": "Lam",
     "abbrev": "Lam",
     "node": 623743,
-    "words": 2468,
+    "words": 2463,
     "chapters": {
       "624821": "1",
       "624822": "2",
@@ -1478,7 +1478,7 @@
     "name": "Ezek",
     "abbrev": "Ezek",
     "node": 623744,
-    "words": 29386,
+    "words": 29364,
     "chapters": {
       "624826": "1",
       "624827": "2",
@@ -1543,7 +1543,7 @@
     "name": "BelTh",
     "abbrev": "BelTh",
     "node": 623746,
-    "words": 867,
+    "words": 863,
     "chapters": {
       "624875": "1"
     }
@@ -1552,7 +1552,7 @@
     "name": "Dan",
     "abbrev": "Dan",
     "node": 623747,
-    "words": 10960,
+    "words": 10952,
     "chapters": {
       "624876": "1",
       "624877": "2",
@@ -1572,7 +1572,7 @@
     "name": "DanTh",
     "abbrev": "DanTh",
     "node": 623748,
-    "words": 10285,
+    "words": 10272,
     "chapters": {
       "624888": "1",
       "624889": "2",
@@ -1592,7 +1592,7 @@
     "name": "Sus",
     "abbrev": "Sus",
     "node": 623749,
-    "words": 889,
+    "words": 885,
     "chapters": {
       "624900": "1"
     }
@@ -1601,7 +1601,7 @@
     "name": "SusTh",
     "abbrev": "SusTh",
     "node": 623750,
-    "words": 1132,
+    "words": 1130,
     "chapters": {
       "624901": "1"
     }

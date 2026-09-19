@@ -64,7 +64,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Ge"
                         ],
                         "long": "Genesis",
-                        "words": 32757
+                        "words": 32635
             },
             "623695": {
                         "abbrev": "Exod",
@@ -73,7 +73,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Exod"
                         ],
                         "long": "Exodus",
-                        "words": 24656
+                        "words": 24647
             },
             "623696": {
                         "abbrev": "Lev",
@@ -82,7 +82,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Lev"
                         ],
                         "long": "Leviticus",
-                        "words": 19044
+                        "words": 19042
             },
             "623697": {
                         "abbrev": "Num",
@@ -91,7 +91,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Num"
                         ],
                         "long": "Numbers",
-                        "words": 24989
+                        "words": 24973
             },
             "623698": {
                         "abbrev": "Deut",
@@ -102,7 +102,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Dt"
                         ],
                         "long": "Deuteronomy",
-                        "words": 22503
+                        "words": 22501
             },
             "623699": {
                         "abbrev": "Josh",
@@ -111,7 +111,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Josh"
                         ],
                         "long": "Joshua",
-                        "words": 14836
+                        "words": 14815
             },
             "623700": {
                         "abbrev": "Judg",
@@ -148,7 +148,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "I Sa"
                         ],
                         "long": "I Kingdoms",
-                        "words": 20048
+                        "words": 20044
             },
             "623703": {
                         "abbrev": "2Kgdms",
@@ -165,7 +165,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "2 Kgdms"
                         ],
                         "long": "II Kingdoms",
-                        "words": 17911
+                        "words": 17906
             },
             "623704": {
                         "abbrev": "3Kgdms",
@@ -181,7 +181,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "I Kg"
                         ],
                         "long": "III Kingdoms",
-                        "words": 20493
+                        "words": 20436
             },
             "623705": {
                         "abbrev": "4Kgdms",
@@ -197,7 +197,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "2 Kg"
                         ],
                         "long": "IV Kingdoms",
-                        "words": 18622
+                        "words": 18618
             },
             "623706": {
                         "abbrev": "1Chr",
@@ -212,7 +212,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "I Ch"
                         ],
                         "long": "I Chronicles",
-                        "words": 15969
+                        "words": 15967
             },
             "623707": {
                         "abbrev": "2Chr",
@@ -227,7 +227,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "2 Ch"
                         ],
                         "long": "II Chronicles",
-                        "words": 21071
+                        "words": 21059
             },
             "623708": {
                         "abbrev": "1Esdr",
@@ -253,7 +253,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Ezr"
                         ],
                         "long": "II Esdras",
-                        "words": 12669
+                        "words": 12668
             },
             "623710": {
                         "abbrev": "Esth",
@@ -263,7 +263,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Est"
                         ],
                         "long": "Esther",
-                        "words": 5936
+                        "words": 5830
             },
             "623711": {
                         "abbrev": "Jdt",
@@ -272,7 +272,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Jdt"
                         ],
                         "long": "Judith",
-                        "words": 9099
+                        "words": 9097
             },
             "623712": {
                         "abbrev": "TobBA",
@@ -348,7 +348,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "4 Mac"
                         ],
                         "long": "4 Maccabees",
-                        "words": 7911
+                        "words": 7898
             },
             "623718": {
                         "abbrev": "Ps",
@@ -359,7 +359,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Ps"
                         ],
                         "long": "Psalms",
-                        "words": 34642
+                        "words": 34615
             },
             "623719": {
                         "abbrev": "Od",
@@ -371,7 +371,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Od"
                         ],
                         "long": "Odes",
-                        "words": 4206
+                        "words": 4192
             },
             "623720": {
                         "abbrev": "Prov",
@@ -381,7 +381,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Pr"
                         ],
                         "long": "Proverbs",
-                        "words": 11142
+                        "words": 11091
             },
             "623721": {
                         "abbrev": "Qoh",
@@ -392,7 +392,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Qoh"
                         ],
                         "long": "Ecclesiastes",
-                        "words": 4521
+                        "words": 4518
             },
             "623722": {
                         "abbrev": "Cant",
@@ -404,7 +404,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Cant"
                         ],
                         "long": "Song of Solomon",
-                        "words": 1996
+                        "words": 1994
             },
             "623723": {
                         "abbrev": "Job",
@@ -413,7 +413,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Jb"
                         ],
                         "long": "Job",
-                        "words": 13539
+                        "words": 13509
             },
             "623724": {
                         "abbrev": "Wis",
@@ -424,7 +424,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Wis"
                         ],
                         "long": "Wisdom of Solomon",
-                        "words": 6935
+                        "words": 6930
             },
             "623725": {
                         "abbrev": "Sir",
@@ -435,7 +435,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Sir"
                         ],
                         "long": "Sirach",
-                        "words": 18467
+                        "words": 18439
             },
             "623726": {
                         "abbrev": "PsSol",
@@ -446,7 +446,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "PsaSol"
                         ],
                         "long": "Psalms of Solomon",
-                        "words": 4908
+                        "words": 4904
             },
             "623727": {
                         "abbrev": "Hos",
@@ -455,7 +455,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Hos"
                         ],
                         "long": "Hosea",
-                        "words": 3917
+                        "words": 3915
             },
             "623728": {
                         "abbrev": "Mic",
@@ -472,7 +472,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Amos"
                         ],
                         "long": "Amos",
-                        "words": 3202
+                        "words": 3200
             },
             "623730": {
                         "abbrev": "Joel",
@@ -530,7 +530,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Zeph"
                         ],
                         "long": "Zephaniah",
-                        "words": 1225
+                        "words": 1223
             },
             "623736": {
                         "abbrev": "Hag",
@@ -539,7 +539,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Hag"
                         ],
                         "long": "Haggai",
-                        "words": 950
+                        "words": 948
             },
             "623737": {
                         "abbrev": "Zech",
@@ -548,7 +548,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Zech"
                         ],
                         "long": "Zechariah",
-                        "words": 4959
+                        "words": 4952
             },
             "623738": {
                         "abbrev": "Mal",
@@ -557,7 +557,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Mal"
                         ],
                         "long": "Malachi",
-                        "words": 1409
+                        "words": 1408
             },
             "623739": {
                         "abbrev": "Isa",
@@ -567,7 +567,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Is"
                         ],
                         "long": "Isaiah",
-                        "words": 26988
+                        "words": 26953
             },
             "623740": {
                         "abbrev": "Jer",
@@ -576,7 +576,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Jer"
                         ],
                         "long": "Jeremiah",
-                        "words": 28781
+                        "words": 28775
             },
             "623741": {
                         "abbrev": "Bar",
@@ -585,7 +585,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Bar"
                         ],
                         "long": "Baruch",
-                        "words": 2603
+                        "words": 2599
             },
             "623742": {
                         "abbrev": "EpJer",
@@ -595,7 +595,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "EpJer"
                         ],
                         "long": "Epistle of Jeremiah",
-                        "words": 1286
+                        "words": 1284
             },
             "623743": {
                         "abbrev": "Lam",
@@ -604,7 +604,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Lam"
                         ],
                         "long": "Lamentations",
-                        "words": 2468
+                        "words": 2463
             },
             "623744": {
                         "abbrev": "Ezek",
@@ -613,7 +613,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Ezek"
                         ],
                         "long": "Ezekiel",
-                        "words": 29386
+                        "words": 29364
             },
             "623745": {
                         "abbrev": "Bel",
@@ -633,7 +633,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "BelTh"
                         ],
                         "long": "Bel and the Dragon Th",
-                        "words": 867
+                        "words": 863
             },
             "623747": {
                         "abbrev": "Dan",
@@ -650,7 +650,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Dan"
                         ],
                         "long": "Daniel LXX",
-                        "words": 10960
+                        "words": 10952
             },
             "623748": {
                         "abbrev": "DanTh",
@@ -662,7 +662,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "DanTh"
                         ],
                         "long": "Daniel Th",
-                        "words": 10285
+                        "words": 10272
             },
             "623749": {
                         "abbrev": "Sus",
@@ -675,7 +675,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "Sus"
                         ],
                         "long": "Susanna OG",
-                        "words": 889
+                        "words": 885
             },
             "623750": {
                         "abbrev": "SusTh",
@@ -685,7 +685,7 @@ class LxxVocabDataset extends VocabDataset {
                                     "SusTh"
                         ],
                         "long": "Susanna Th",
-                        "words": 1132
+                        "words": 1130
             },
             "623751": {
                         "abbrev": "SirProl",
@@ -2016,8 +2016,8 @@ class LxxVocabDataset extends VocabDataset {
         this.posDict = LxxVocabDataset.posDict;
         this.posGroups = LxxVocabDataset.posGroups;
         this.posGroupsUIDesc = LxxVocabDataset.posGroupsUIDesc;
-        this.lexStats.totalWords = 608833;
-        this.lexStats.totalLexemes = 20775;
+        this.lexStats.totalWords = 608170;
+        this.lexStats.totalLexemes = 20626;
         this.lexemes = lxxLexemes;
     }
 }
