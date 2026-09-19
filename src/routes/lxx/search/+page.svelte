@@ -115,15 +115,18 @@
 			{#if bestMatchedIndexes.length > 0}
 				<h2>Best Matches:</h2>
 				{#each bestMatchedIndexes as key}
-					<Button
-						buttonText={lxxLexesList.greek[key]}
-						toggled={() => {
-							selectLemma(lxxLexesList.id[key]);
-						}}
-						textSize="text-2xl "
-						buttonColors="btn-lemma"
-						style="font-bold greek "
-					/> &nbsp;
+					<div class="lex-div">
+						<Button
+							buttonText={lxxLexesList.greek[key]}
+							toggled={() => {
+								selectLemma(lxxLexesList.id[key]);
+							}}
+							textSize="text-2xl "
+							buttonColors="btn-lemma"
+							style="font-bold greek "
+						/>
+					</div>
+					&nbsp;
 				{/each}
 			{/if}
 

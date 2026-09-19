@@ -27,7 +27,7 @@ export const DARK_STOPS = [
 	[1.00, [0, 0, 0], [255, 255, 255]]        // pure white on black
 ];
 
-// Lemma button stops: deep burgundy on light backgrounds, luminous ruby on dark
+// Lemma button stops: deep burgundy on light backgrounds, refined slate/ocean blue on dark
 export const LEMMA_BTN_LIGHT_STOPS = [
 	[0.00, [140, 24, 40]],   // deep wine / crimson (#8c1828)
 	[0.25, [160, 28, 42]],   // rich burgundy (#a01c2a)
@@ -35,9 +35,9 @@ export const LEMMA_BTN_LIGHT_STOPS = [
 ];
 
 export const LEMMA_BTN_DARK_STOPS = [
-	[0.50, [210, 48, 60]],   // vibrant radiant ruby (#d2303c)
-	[0.75, [228, 58, 70]],   // vivid crimson (#e43a46)
-	[1.00, [242, 70, 80]]    // bright luminous red (#f24650)
+	[0.50, [30, 88, 140]],   // deep slate blue (#1e588c)
+	[0.75, [36, 105, 162]],  // rich ocean sapphire (#2469a2)
+	[1.00, [42, 120, 182]]   // refined steel blue (#2a78b6)
 ];
 
 // Lookup/Action button stops (inverted contrast: dark fill on light page, light fill on dark page)

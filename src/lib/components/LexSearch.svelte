@@ -75,7 +75,7 @@
 	 * @type {Lexeme} foundLemma
 	 */
 	let foundLemma = $state(new Lexeme());
-	let lexRefsQueries=$derived(new LexRefQueries(tfData))
+	let lexRefsQueries = $derived(new LexRefQueries(tfData));
 	/**
 	 *
 	 * @param {string} input
@@ -119,15 +119,17 @@
 			{#if bestMatchedIndexes.length > 0}
 				<h2>Best Matches:</h2>
 				{#each bestMatchedIndexes as key}
-					<Button
-						buttonText={tfData.lexemes[tfData.lang][key]}
-						toggled={() => {
-							selectLemma(tfData.lexemes.id[key]);
-						}}
-						textSize="text-2xl "
-						buttonColors="btn-lemma"
-						style="font-bold greek "
-					/> &nbsp;
+					<div class="lex-div">
+						<Button
+							buttonText={tfData.lexemes[tfData.lang][key]}
+							toggled={() => {
+								selectLemma(tfData.lexemes.id[key]);
+							}}
+							textSize="text-2xl "
+							buttonColors="btn-lemma"
+							style="font-bold greek "
+						/>
+					</div>
 				{/each}
 			{/if}
 
@@ -137,15 +139,17 @@
 					{#if bestMatchedIndexes.length > 0}Other{/if} Matches:
 				</h2>
 				{#each otherMatchedIndexes as key}
-					<Button
-						buttonText={tfData.lexemes[tfData.lang][key]}
-						toggled={() => {
-							selectLemma(tfData.lexemes.id[key]);
-						}}
-						textSize="text-2xl "
-						buttonColors="btn-lemma"
-						style="font-bold greek "
-					/> &nbsp;
+					<div class="lex-div">
+						<Button
+							buttonText={tfData.lexemes[tfData.lang][key]}
+							toggled={() => {
+								selectLemma(tfData.lexemes.id[key]);
+							}}
+							textSize="text-2xl "
+							buttonColors="btn-lemma"
+							style="font-bold greek "
+						/>
+					</div>
 				{/each}
 			{/if}
 		</div>
@@ -155,7 +159,11 @@
 </div>
 <Modal2 bind:showModal title="{StringUtils.capitalize(lang)} Lemma Details">
 	{#if queryReady == true && foundLemma.id >= 0 && lexRefsQueries.corpusRefsQueries[foundLemma.id].ready}
-		<LemmaInfo {tfData} lemma={foundLemma} corpusRefsQuery={lexRefsQueries.corpusRefsQueries[foundLemma.id]}/>
+		<LemmaInfo
+			{tfData}
+			lemma={foundLemma}
+			corpusRefsQuery={lexRefsQueries.corpusRefsQueries[foundLemma.id]}
+		/>
 	{:else}
 		Retreiving Lemma information...<span class="loading loading-spinner loading-lg"></span>
 	{/if}
@@ -177,5 +185,9 @@
 	}
 	hr.thick {
 		@apply mb-2 border-b-2 border-b-black;
+	}
+	.lex-div {
+		display: inline-block;
+		margin: 0.25rem 0.2rem;
 	}
 </style>

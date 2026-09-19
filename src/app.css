@@ -21,8 +21,8 @@
 }
 
 :root[data-theme="dark"] {
-    --color-lemma-btn-bg: #d2303c;
-    --color-lemma-btn-hover: #e43a46;
+    --color-lemma-btn-bg: #2469a2;
+    --color-lemma-btn-hover: #357cb7;
     --color-lemma-btn-text: #ffffff;
     --color-lemma-btn-border: rgba(255, 255, 255, 0.25);
     --color-lemma-btn-shadow: 0 2px 8px rgba(0, 0, 0, 0.6);
