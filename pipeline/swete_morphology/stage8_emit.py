@@ -32,6 +32,7 @@ from .lemma_consolidator import (
     build_dynamic_consolidations,
     canonicalize_token_lemma,
 )
+from .gloss_resolver import GlossResolver
 
 
 GREEK_LETTERS = "αβγδεζηθικλμνξοπρστυφχψω"
@@ -220,21 +221,25 @@ def emit():
         lemma_pos_counter[lem][t["pos"]] += 1
 
     sorted_lemmas = [lem for lem, _ in lemma_frequencies.most_common()]
+    gloss_resolver = GlossResolver()
+    print(f"Resolving English glosses and Strong's IDs for {len(sorted_lemmas):,} unique lemmata...")
+
     for idx, lem in enumerate(sorted_lemmas, start=1):
         lemma_to_id[lem] = idx
         plain = strip_accents(lem)
         if plain not in plain_to_id:
             plain_to_id[plain] = idx
         most_common_pos = lemma_pos_counter[lem].most_common(1)[0][0]
+        gloss, strongs = gloss_resolver.resolve(lem, most_common_pos, lemma_frequencies[lem])
         lemma_store[idx] = {
             "id": idx,
             "lemma": lem,
-            "gloss": lem if most_common_pos == 13 else "",
+            "gloss": gloss,
             "pos": most_common_pos,
             "total": 0,
             "beta": greek_to_beta(lem),
             "plain": plain,
-            "strongs": ""
+            "strongs": strongs
         }
 
     total_words_corpus = 0

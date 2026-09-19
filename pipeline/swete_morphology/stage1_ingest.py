@@ -37,6 +37,7 @@ ALL_CAPS_NORMALIZATIONS = {
     "ΚΑΙ": "Καὶ",
     "ΟΥΤΟΙ": "Οὗτοι",
     "ἌΝΘΡΩΠΟΣ": "Ἄνθρωπος",
+    "ΑΝΘΡΩΠΟΣ": "Ἄνθρωπος",
     "ΑΔΑΜ": "Ἀδάμ",
     "ΛΟΓΟΙ": "Λόγοι",
     "ΜΑΚΑΡΙΟΣ": "Μακάριος",
@@ -46,7 +47,10 @@ ALL_CAPS_NORMALIZATIONS = {
     "ΟΡΑCΙC": "Ὅρασις",
     "ΟΡΑΣΙΣ": "Ὅρασις",
     "ΤΟ": "Τὸ",
+    "ΤΟΙΣ": "Τοῖς",
+    "ΔΕ": "Δὲ",
     "ΡΗΜΑ": "ῥῆμα",
+    "ΡΗΜΑΤΑ": "Ῥήματα",
     "ΠΡΟΦΗΤΕΙΑ": "Προφητεία",
     "ΒΙΒΛΟΣ": "Βίβλος",
     "ΛΗΜΜΑ": "Λῆμμα",
@@ -55,7 +59,19 @@ ALL_CAPS_NORMALIZATIONS = {
     "ΩΔΗ": "ᾨδή",
     "ΩΔΑΙ": "ᾨδαί",
     "ΕΤΟΥΣ": "Ἔτους",
+    "ΑΓΑΠΗΣΑΤΕ": "Ἀγαπήσατε",
+    "ΠΟΛΛΩΝ": "Πολλῶν",
+    "ΠΑΣΑ": "Πᾶσα",
+    "ΛΟΓΟΣ": "Λόγος",
+    "ΑΝΤΙΓΡΑΦΟΝ": "Ἀντίγραφον",
+    "ΕΠΙ": "Ἐπί",
+    "ΦΙΛΟΣΟΦΩΤΑΤΟΝ": "Φιλοσοφώτατον",
+    "ΕΒΟΗΣΑ": "Ἐβόησα",
+    "ΑΣΩΜΕΝ": "ᾌσωμεν",
+    "ΣέΒεε": "Σέβεε",
+    "ΙΙερσῶν": "Περσῶν",
 }
+
 
 PUNCTUATION_CHARS = ".,;·:!?᾽’”“«»-—"
 EDITORIAL_CHARS = set("⸂⸃⸆⸇⸀⸁⸄⸅⸈⸉⸊⸋[]⟦⟧⟨⟩⟪⟫()†‡*0123456789")
@@ -179,12 +195,21 @@ def ingest():
             # Normalize decorative all-caps if applicable
             if clean_word in ALL_CAPS_NORMALIZATIONS:
                 surface = ALL_CAPS_NORMALIZATIONS[clean_word]
+            elif len(clean_word) > 1 and sum(1 for c in clean_word if c.isupper()) > 1:
+                # If word has multiple uppercase letters (all-caps or internal capital typo)
+                if prev_was_end:
+                    # Sentence start: capitalize first letter, lowercase the rest
+                    surface = clean_word[0] + clean_word[1:].lower()
+                else:
+                    # Mid-sentence: lowercase all letters
+                    surface = clean_word.lower()
             else:
                 surface = unicodedata.normalize("NFC", clean_word)
 
             norm = strip_accents(surface)
             is_cap = bool(surface and surface[0].isupper() and not surface.isupper())
             is_start = prev_was_end
+            is_elided = bool(any(c in punct for c in ("᾽", "’", "'")))
 
             token_obj = {
                 "id": word_id,
@@ -197,7 +222,9 @@ def ingest():
                 "norm": norm,
                 "is_cap": is_cap,
                 "is_sentence_start": is_start,
+                "is_elided": is_elided,
             }
+
 
             tokens.append(token_obj)
             types_counter[surface] += 1

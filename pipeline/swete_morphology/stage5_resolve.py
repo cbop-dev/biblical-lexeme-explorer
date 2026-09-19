@@ -36,6 +36,103 @@ from .lexical_rules import (
 
 STANZA_OUT_FILE = BUILD_DIR / "swete_stanza.json"
 
+# Decorative drop caps / incipit word overrides (e.g. Job 1:1, Qoh 1:1)
+INCIPIT_OVERRIDES = {
+    "Ἄνθρωπος": ("ἄνθρωπος", 4, "N-NSM"),
+    "ΑΝΘΡΩΠΟΣ": ("ἄνθρωπος", 4, "N-NSM"),
+    "Ῥήματα": ("ῥῆμα", 4, "N-NPN"),
+    "ΡΗΜΑΤΑ": ("ῥῆμα", 4, "N-NPN"),
+    "Ἀγαπήσατε": ("ἀγαπάω", 11, "V-AAM-2P"),
+    "ΑΓΑΠΗΣΑΤΕ": ("ἀγαπάω", 11, "V-AAM-2P"),
+    "Πολλῶν": ("πολύς", 0, "A-GPM"),
+    "ΠΟΛΛΩΝ": ("πολύς", 0, "A-GPM"),
+    "Πᾶσα": ("πᾶς", 0, "A-NSF"),
+    "ΠΑΣΑ": ("πᾶς", 0, "A-NSF"),
+    "Λόγος": ("λόγος", 4, "N-NSM"),
+    "ΛΟΓΟΣ": ("λόγος", 4, "N-NSM"),
+    "Ἀντίγραφον": ("ἀντίγραφον", 4, "N-NSN"),
+    "ΑΝΤΙΓΡΑΦΟΝ": ("ἀντίγραφον", 4, "N-NSN"),
+    "Ἐπί": ("ἐπί", 5, "PREP"),
+    "ΕΠΙ": ("ἐπί", 5, "PREP"),
+    "Τοῖς": ("ὁ", 6, "RA-DPM"),
+    "ΤΟΙΣ": ("ὁ", 6, "RA-DPM"),
+    "Δὲ": ("δέ", 1, "CONJ"),
+    "ΔΕ": ("δέ", 1, "CONJ"),
+    "Φιλοσοφώτατον": ("φιλόσοφος", 0, "A-ASM-S"),
+    "ΦΙΛΟΣΟΦΩΤΑΤΟΝ": ("φιλόσοφος", 0, "A-ASM-S"),
+    "Ἐβόησα": ("βοάω", 11, "V-AAI-1S"),
+    "ΕΒΟΗΣΑ": ("βοάω", 11, "V-AAI-1S"),
+    "ᾌσωμεν": ("ᾄδω", 11, "V-AAS-1P"),
+    "ΑΣΩΜΕΝ": ("ᾄδω", 11, "V-AAS-1P"),
+}
+
+# Elided closed-class words mapping: surface -> (lemma, pos, morph)
+ELIDED_WORDS = {
+    # Conjunctions
+    "ἀλλ": ("ἀλλά", 1, "CONJ"),
+    "Ἀλλ": ("ἀλλά", 1, "CONJ"),
+    "δ": ("δέ", 1, "CONJ"),
+    "Δ": ("δέ", 1, "CONJ"),
+    "οὐδ": ("οὐδέ", 1, "CONJ"),
+    "Οὐδ": ("οὐδέ", 1, "CONJ"),
+    "μηδ": ("μηδέ", 1, "CONJ"),
+    "Μηδ": ("μηδέ", 1, "CONJ"),
+    "οὔτ": ("οὔτε", 1, "CONJ"),
+    "οὔθ": ("οὔτε", 1, "CONJ"),
+    "Οὔτ": ("οὔτε", 1, "CONJ"),
+    "Οὔθ": ("οὔτε", 1, "CONJ"),
+    "μήτ": ("μήτε", 1, "CONJ"),
+    "μήθ": ("μήτε", 1, "CONJ"),
+    "Μήτ": ("μήτε", 1, "CONJ"),
+    "Μήθ": ("μήτε", 1, "CONJ"),
+    "ἵν": ("ἵνα", 1, "CONJ"),
+    "Ἵν": ("ἵνα", 1, "CONJ"),
+    "ὥστ": ("ὥστε", 1, "CONJ"),
+    "ὥσθ": ("ὥστε", 1, "CONJ"),
+    "Ὥστ": ("ὥστε", 1, "CONJ"),
+    "Ὥσθ": ("ὥστε", 1, "CONJ"),
+    "ὅτ": ("ὅτε", 1, "CONJ"),
+    "ὅθ": ("ὅτε", 1, "CONJ"),
+    "Ὅτ": ("ὅτε", 1, "CONJ"),
+    "Ὅθ": ("ὅτε", 1, "CONJ"),
+    # Prepositions
+    "ἐπ": ("ἐπί", 5, "PREP"),
+    "ἐφ": ("ἐπί", 5, "PREP"),
+    "Ἐπ": ("ἐπί", 5, "PREP"),
+    "Ἐφ": ("ἐπί", 5, "PREP"),
+    "μετ": ("μετά", 5, "PREP"),
+    "μεθ": ("μετά", 5, "PREP"),
+    "Μετ": ("μετά", 5, "PREP"),
+    "Μεθ": ("μετά", 5, "PREP"),
+    "ἀπ": ("ἀπό", 5, "PREP"),
+    "ἀφ": ("ἀπό", 5, "PREP"),
+    "Ἀπ": ("ἀπό", 5, "PREP"),
+    "Ἀφ": ("ἀπό", 5, "PREP"),
+    "ὑπ": ("ὑπό", 5, "PREP"),
+    "ὑφ": ("ὑπό", 5, "PREP"),
+    "Ὑπ": ("ὑπό", 5, "PREP"),
+    "Ὑφ": ("ὑπό", 5, "PREP"),
+    "κατ": ("κατά", 5, "PREP"),
+    "καθ": ("κατά", 5, "PREP"),
+    "Κατ": ("κατά", 5, "PREP"),
+    "Καθ": ("κατά", 5, "PREP"),
+    "δι": ("διά", 5, "PREP"),
+    "Δι": ("διά", 5, "PREP"),
+    "παρ": ("παρά", 5, "PREP"),
+    "Παρ": ("παρά", 5, "PREP"),
+    "ἀντ": ("ἀντί", 5, "PREP"),
+    "ἀνθ": ("ἀντί", 5, "PREP"),
+    "Ἀντ": ("ἀντί", 5, "PREP"),
+    "Ἀνθ": ("ἀντί", 5, "PREP"),
+    # Pronouns & Adjectives
+    "τοῦτ": ("οὗτος", 6, "D"),
+    "Τοῦτ": ("οὗτος", 6, "D"),
+    "ταῦτ": ("οὗτος", 6, "D"),
+    "Ταῦτ": ("οὗτος", 6, "D"),
+    "πάντ": ("πᾶς", 0, "A"),
+    "Πάντ": ("πᾶς", 0, "A"),
+}
+
 # Closed class words with 100% fixed POS
 CLOSED_CLASS_POS = {
     "καί": 1, "δέ": 1, "τε": 1, "ἀλλά": 1, "ὅτι": 1, "ἵνα": 1, "εἰ": 1, "ἐάν": 1, "ὥστε": 1, "ὅτε": 1, "ὅταν": 1, "ἤ": 1,
@@ -43,6 +140,7 @@ CLOSED_CLASS_POS = {
     "οὐ": 12, "μή": 12, "ἄν": 12, "δή": 12, "οὖν": 12, "μέν": 12, "γε": 12, "ναί": 12, "ἆρα": 12,
     "ὁ": 6,
 }
+
 
 # Exact Greek article forms (never match relative pronouns ὃ, ὅ, ἥ, ἣ, ᾗ, οἳ, or conjunction ἢ)
 ARTICLE_SURFACES = {
@@ -120,9 +218,30 @@ def resolve():
             elif s_lemma_clean.endswith("ῆ"):
                 s_lemma_clean = s_lemma_clean[:-1] + "οῦς"
 
+        # -1. Decorative opening incipits (e.g. Job 1:1, Qoh 1:1)
+        if surface in INCIPIT_OVERRIDES:
+            lemma, pos, morph = INCIPIT_OVERRIDES[surface]
+            confidence = 0.99
+            source = "incipit_override"
+            stats["incipit"] += 1
+
+        # -0. Elided closed-class words (ἀλλ᾽, ἐπ᾽, μετ᾽, etc.)
+        elif (t.get("is_elided") or any(c in t.get("punct", "") for c in ("᾽", "’", "'"))) and surface in ELIDED_WORDS:
+            lemma, pos, morph = ELIDED_WORDS[surface]
+            confidence = 0.99
+            source = "elided_closed_class"
+            stats["elided"] += 1
+
+        elif surface in ELIDED_WORDS and surface in ("ἀλλ", "Ἀλλ", "οὐδ", "Οὐδ", "μηδ", "Μηδ", "οὔτ", "μήτ", "ὥστ", "ἵν", "ἐπ", "ἐφ", "μετ", "μεθ", "ἀπ", "ἀφ", "ὑπ", "ὑφ", "κατ", "καθ", "δι", "παρ", "ἀντ", "ἀνθ"):
+            lemma, pos, morph = ELIDED_WORDS[surface]
+            confidence = 0.99
+            source = "elided_closed_class"
+            stats["elided"] += 1
+
         # 0. High-confidence surface overrides (imperatives, irregular verbs, blindspots)
-        if surface in SURFACE_LEMMA_OVERRIDES:
+        elif surface in SURFACE_LEMMA_OVERRIDES:
             ov = SURFACE_LEMMA_OVERRIDES[surface]
+
             lemma = ov["lemma"]
             pos = ov["pos"]
             morph = ov.get("morph", s_morph)
