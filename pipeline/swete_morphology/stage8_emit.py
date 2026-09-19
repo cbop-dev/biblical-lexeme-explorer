@@ -119,6 +119,15 @@ def strip_accents(s: str) -> str:
     return unicodedata.normalize("NFC", clean).lower().replace("ς", "σ")
 
 
+def make_plain_greek(s: str) -> str:
+    """Case-preserving diacritic stripping matching SBLGNT and GreekLexeme.makePlain()."""
+    if not s:
+        return ""
+    norm = unicodedata.normalize("NFKD", s)
+    clean = "".join(c for c in norm if not unicodedata.combining(c) and c != "ͅ" and c != "\u0345")
+    return unicodedata.normalize("NFC", clean)
+
+
 def greek_to_beta(s: str) -> str:
     if not s:
         return ""
@@ -226,7 +235,7 @@ def emit():
 
     for idx, lem in enumerate(sorted_lemmas, start=1):
         lemma_to_id[lem] = idx
-        plain = strip_accents(lem)
+        plain = make_plain_greek(lem)
         if plain not in plain_to_id:
             plain_to_id[plain] = idx
         most_common_pos = lemma_pos_counter[lem].most_common(1)[0][0]
@@ -377,7 +386,7 @@ def emit():
 
     # 6. src/lib/lxx/lxxLexes6.json
     print(f"Writing client search index lxxLexes6.json...")
-    sorted_lexemes = sorted(lemma_store.values(), key=lambda x: (x["plain"], x["lemma"]))
+    sorted_lexemes = sorted(lemma_store.values(), key=lambda x: (x["plain"].lower(), x["lemma"]))
     client_search_index = {
         "greek": [x["lemma"] for x in sorted_lexemes],
         "plain": [x["plain"] for x in sorted_lexemes],

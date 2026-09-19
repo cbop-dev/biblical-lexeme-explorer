@@ -36,6 +36,74 @@ from .lexical_rules import (
 
 STANZA_OUT_FILE = BUILD_DIR / "swete_stanza.json"
 
+OXIA_TO_TONOS = {
+    0x1F71: 0x03AC, 0x1F73: 0x03AD, 0x1F75: 0x03AE, 0x1F77: 0x03AF,
+    0x1F79: 0x03CC, 0x1F7B: 0x03CD, 0x1F7D: 0x03CE, 0x1FBB: 0x03AC,
+    0x1FC9: 0x03AD, 0x1FCB: 0x03AE, 0x1FDB: 0x03AF, 0x1FEB: 0x03CD,
+    0x1FF9: 0x03CC, 0x1FFB: 0x03CE,
+}
+
+
+def norm_greek(s: str) -> str:
+    """Normalize Greek to NFC and map archaic oxia diacritics to modern tonos."""
+    if not s:
+        return ""
+    import unicodedata
+    return unicodedata.normalize("NFC", s).translate(OXIA_TO_TONOS).strip()
+
+
+def load_tf_word_map(tf_dir: Path = Path("/home/cbrannan/text-fabric-data/github/CenterBLC/LXX/tf/1935")) -> dict:
+    if not tf_dir.exists():
+        print(f"Warning: CenterBLC TF dir not found at {tf_dir}")
+        return {}
+
+    def read_tf(feat: str) -> list[str]:
+        p = tf_dir / f"{feat}.tf"
+        if not p.exists():
+            return []
+        with open(p, "r", encoding="utf-8") as f:
+            lines = [line.rstrip("\n") for line in f if not line.startswith("@")]
+        return lines[1:] if len(lines) > 1 else []
+
+    words = read_tf("word")
+    lexes = read_tf("lex_utf8")
+    sps = read_tf("sp")
+
+    tf_words = {}
+    for w, l, s in zip(words, lexes, sps):
+        nw = norm_greek(w).lower()
+        nl = norm_greek(l)
+        if nw not in tf_words:
+            tf_words[nw] = Counter()
+        tf_words[nw][(nl, s)] += 1
+
+    tf_best = {}
+    for w, cnt in tf_words.items():
+        (best_l, best_sp), _ = cnt.most_common(1)[0]
+        tf_best[w] = (best_l, best_sp)
+
+    print(f"Loaded {len(tf_best):,} distinct surface inflections from CenterBLC Text-Fabric.")
+    return tf_best
+
+
+STANZA_MANGLED_FALLBACKS = {
+    "ἀαδίζω": ("βαδίζω", 11),
+    "ἁαδίζω": ("βαδίζω", 11),
+    "ἀαθίζω": ("καθίζω", 11),
+    "ἀαλύπτω": ("καλύπτω", 11),
+    "ἀακράν": ("μακράν", 2),
+    "ἀάρειμι": ("Θαρσά", 13),
+    "ἀάπειμι": ("Σαβά", 13),
+    "δοιέω": ("ποιέω", 11),
+    "ὁανέω": ("ἱκανόω", 11),
+    "αασιλεύω": ("βασιλεύω", 11),
+    "αατρεύω": ("ἰατρεύω", 11),
+    "ααδιάζομαι": ("Χαδιάσαι", 13),
+    "Eπάκουσος": ("Ἐπάκουσος", 13),
+    "Eπίστρέφος": ("Ἐπίστρεφος", 13),
+    "nηστεύω": ("νηστεύω", 11),
+}
+
 # Decorative drop caps / incipit word overrides (e.g. Job 1:1, Qoh 1:1)
 INCIPIT_OVERRIDES = {
     "Ἄνθρωπος": ("ἄνθρωπος", 4, "N-NSM"),
@@ -63,7 +131,8 @@ INCIPIT_OVERRIDES = {
     "Ἐβόησα": ("βοάω", 11, "V-AAI-1S"),
     "ΕΒΟΗΣΑ": ("βοάω", 11, "V-AAI-1S"),
     "ᾌσωμεν": ("ᾄδω", 11, "V-AAS-1P"),
-    "ΑΣΩΜΕΝ": ("ᾄδω", 11, "V-AAS-1P"),
+    "Θάρσει": ("θαρσέω", 11, "V-PAM-2S"),
+    "Θάρσα": ("θαρσέω", 11, "V-PAM-2S"),
 }
 
 # Elided closed-class words mapping: surface -> (lemma, pos, morph)
@@ -175,6 +244,9 @@ def resolve():
     print(f"Loading Stanza predictions from {STANZA_OUT_FILE}...")
     with open(STANZA_OUT_FILE, "r", encoding="utf-8") as f:
         stanza_preds = json.load(f)
+
+    print("Loading CenterBLC Text-Fabric word map for inflection lookup...")
+    tf_word_map = load_tf_word_map()
 
     print(f"Resolving {len(tokens):,} tokens...")
     resolved = []
@@ -342,27 +414,58 @@ def resolve():
             source = "closed_class"
             stats["closed_class"] += 1
 
-        # 5. Sentence-initial tokens: presume COMMON word unless confirmed proper name
-        elif is_start:
-            # Check if it matches a confirmed proper name in gazetteer or canonical list
-            if surface in PROPER_NOUN_CANONICAL or (surface in gazetteer and s_upos == "PROPN"):
-                gaz_match = gazetteer.get(surface) or {"lemma": PROPER_NOUN_CANONICAL.get(surface, surface), "is_indecl": True}
+        # 5. Confirmed proper nouns
+        elif surface in PROPER_NOUN_CANONICAL or surface in DECLINABLE_PROPER_NOUNS:
+            gaz_match = gazetteer.get(surface) or {"lemma": PROPER_NOUN_CANONICAL.get(surface, surface), "is_indecl": True}
+            lemma = gaz_match["lemma"]
+            pos = 13  # PROPER_NOUN
+            is_indecl = gaz_match.get("is_indecl", False)
+            morph = "N-PRI" if is_indecl else (s_morph if s_morph.startswith("N-") else "N-PR")
+            confidence = 0.98
+            source = "canonical_proper_noun"
+            stats["proper_name"] += 1
+
+        # 6. Capitalized / Initial tokens: check against known lowercase inflections first
+        elif (is_cap or is_start or (len(surface) > 0 and surface[0].isupper())) and (
+            (surface.lower() if (surface.isupper() and len(surface) > 1) else (surface[0].lower() + surface[1:] if len(surface) > 1 else surface.lower())) in tf_word_map
+        ):
+            low_surf = surface.lower() if (surface.isupper() and len(surface) > 1) else (surface[0].lower() + surface[1:] if len(surface) > 1 else surface.lower())
+            tf_lem, tf_sp = tf_word_map[low_surf]
+            if tf_sp == "verb":
+                lemma = DEPONENT_FIXES.get(tf_lem, tf_lem)
+                pos = 11
+                morph = s_morph if (s_morph.startswith("V-") or s_morph.startswith("V.")) else "V"
+                confidence = 0.98
+                source = "tf_lowercase_verb"
+                stats["tf_lowercase_verb"] += 1
+            elif tf_sp in ("adverb", "conjunction", "preposition", "particle"):
+                lemma = tf_lem
+                pos = 2 if tf_sp == "adverb" else 1 if tf_sp == "conjunction" else 5 if tf_sp == "preposition" else 12
+                morph = s_morph
+                confidence = 0.98
+                source = f"tf_lowercase_{tf_sp}"
+                stats[f"tf_lowercase_{tf_sp}"] += 1
+            elif not is_start and (surface in gazetteer or norm in gazetteer) and (s_upos == "PROPN" or s_pos == 13):
+                # Mid-sentence token verified as proper noun in gazetteer
+                gaz_match = gazetteer.get(surface) or gazetteer.get(norm)
                 lemma = gaz_match["lemma"]
-                pos = 13  # PROPER_NOUN
+                pos = 13
                 is_indecl = gaz_match.get("is_indecl", False)
                 morph = "N-PRI" if is_indecl else (s_morph if s_morph.startswith("N-") else "N-PR")
                 confidence = 0.98
-                source = "gazetteer_sentence_start"
+                source = "gazetteer_mid_sentence"
                 stats["proper_name"] += 1
-            # If Stanza predicts a common word category
-            elif s_upos in ("VERB", "AUX", "DET", "ADP", "CCONJ", "SCONJ", "PART", "PRON") and s_pos != 13:
-                lemma = s_lemma_clean
-                pos = s_pos
+            else:
+                lemma = tf_lem
+                pos = 4 if tf_sp == "noun" else 0
                 morph = s_morph
                 confidence = 0.95
-                source = "sentence_start_common"
-                stats["sentence_start_common"] += 1
-            elif (surface in gazetteer or norm in gazetteer) and (s_upos == "PROPN" or s_pos == 13 or (surface not in ARTICLE_SURFACES and s_upos not in ("VERB", "AUX"))):
+                source = "tf_lowercase_nominal"
+                stats["tf_lowercase_nominal"] += 1
+
+        # 7. Sentence-initial tokens: presume COMMON word unless confirmed proper name
+        elif is_start:
+            if (surface in gazetteer or norm in gazetteer) and (s_upos == "PROPN" or s_pos == 13 or (surface not in ARTICLE_SURFACES and s_upos not in ("VERB", "AUX"))):
                 gaz_match = gazetteer.get(surface) or gazetteer.get(norm)
                 lemma = gaz_match["lemma"]
                 pos = 13  # PROPER_NOUN
@@ -371,6 +474,13 @@ def resolve():
                 confidence = 0.98
                 source = "gazetteer_sentence_start"
                 stats["proper_name"] += 1
+            elif s_upos in ("VERB", "AUX", "DET", "ADP", "CCONJ", "SCONJ", "PART", "PRON") and s_pos != 13:
+                lemma = s_lemma_clean
+                pos = s_pos
+                morph = s_morph
+                confidence = 0.95
+                source = "sentence_start_common"
+                stats["sentence_start_common"] += 1
             else:
                 lemma = s_lemma_clean
                 pos = s_pos
@@ -379,7 +489,7 @@ def resolve():
                 source = "stanza_neural"
                 stats["stanza_neural"] += 1
 
-        # 6. Non-sentence-initial tokens: capitalization indicates proper name
+        # 8. Non-sentence-initial tokens: capitalization indicates proper name
         elif is_cap:
             gaz_match = gazetteer.get(surface) or gazetteer.get(norm)
             if gaz_match:
@@ -416,7 +526,7 @@ def resolve():
                 source = "stanza_neural"
                 stats["stanza_neural"] += 1
 
-        # 7. Default: general neural tagging
+        # 9. Default: general neural tagging
         else:
             lemma = s_lemma_clean
             pos = s_pos
@@ -426,6 +536,10 @@ def resolve():
             stats["stanza_neural"] += 1
 
         lemma = "".join(c for c in lemma if c not in EDITORIAL_CHARS) or surface
+        if lemma in STANZA_MANGLED_FALLBACKS:
+            fb_lem, fb_pos = STANZA_MANGLED_FALLBACKS[lemma]
+            lemma = fb_lem
+            pos = fb_pos
 
         resolved_token = {
             "id": t["id"],

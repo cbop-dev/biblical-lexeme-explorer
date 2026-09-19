@@ -135,7 +135,7 @@ export class Lexeme {
      */
     static makePlain(lemma, lang = "greek") {
         if (lang == "greek")
-            return GreekUtils.plainGreek(lemma)
+            return GreekUtils.removeDiacritics(lemma);
         else if (lang == "hebrew")
             return HebrewUtils.makePlain(lemma);
     }

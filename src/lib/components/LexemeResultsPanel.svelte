@@ -663,7 +663,7 @@
 					<SearchBox
 						transform={(input) => {
 							if (tfData.lang == 'greek') {
-								return GreekUtils.plainGreek(GreekUtils.beta2Greek(input));
+								return GreekUtils.removeDiacritics(GreekUtils.beta2Greek(input));
 							} else if (tfData.lang == 'hebrew') {
 								return HebrewUtils.makePlain(HebrewUtils.beta2Hebrew(input));
 							} else {

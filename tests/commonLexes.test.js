@@ -17,7 +17,7 @@ test('fetchLexes-common-unique', async () => {
     query.common = true;
     query.unique = true;
     await VocabEngine.fetchLexemes(query);
-    expect(query.results.lexemeArray.length).toBe(4);
+    expect(query.results.lexemeArray.length).toBe(3);
 });
 
 test('fetchLexes-unique', async () => {
@@ -25,5 +25,5 @@ test('fetchLexes-unique', async () => {
     query.sections = [623694, 623695];
     query.unique = true;
     await VocabEngine.fetchLexemes(query);
-    expect(query.results.lexemeArray.length).toBe(786);
+    expect(query.results.lexemeArray.length).toBe(728);
 });

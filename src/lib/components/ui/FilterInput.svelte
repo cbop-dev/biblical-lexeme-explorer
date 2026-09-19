@@ -29,7 +29,7 @@ let {
    $effect(()=>{inputText=transform(inputText)});
 
    let caseinsensitive=$derived(!casesensitive);
-   $effect(()=>{filterItems(inputText)}) ;
+   $effect(()=>{ casesensitive; filterItems(inputText); }) ;
    
     
     /**
@@ -63,9 +63,9 @@ let {
                     let otherCount = 0;
 
                     for (const k of itemsList.keys()){
-                        if ( (caseinsensitive && itemsList[k].toLowerCase().match(new RegExp("^" + inputToCheck.toLowerCase())) 
+                        if ( (caseinsensitive && itemsList[k].toLowerCase().startsWith(inputToCheck.toLowerCase()) 
                               && !beginMatches.includes(k) && ! middleMatches.includes(k))
-                             || ((! caseinsensitive) &&itemsList[k].match(new RegExp("^" + inputToCheck)) 
+                             || ((! caseinsensitive) && itemsList[k].startsWith(inputToCheck) 
                              && !beginMatches.includes(k) && ! middleMatches.includes(k))
                               
                             ) 
