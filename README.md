@@ -2,6 +2,8 @@
 
 An interactive, high-performance static web application for exploring and analyzing vocabulary across the Septuagint (LXX), Hebrew Bible (BHS), and Greek New Testament (SBLGNT), complete with offline LSJ dictionary lookup, frequency analysis, concordance searches, and customizable word clouds.
 
+*The lemmatization and morphology pipelines and data are still a work in progress.*
+
 ---
 
 ## Data Provenance & Licensing
