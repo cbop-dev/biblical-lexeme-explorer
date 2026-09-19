@@ -121,20 +121,30 @@
 		</p>
 
 		<div class="space-y-4">
-			<!-- OpenScriptorium / LXX Morph -->
+			<!-- Swete LXX Text -->
 			<div class="card bg-base-100 border border-base-300 p-5 shadow-xs">
 				<div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
-					<h3 class="text-lg font-bold">OpenScriptorium / lxx-morph</h3>
-					<span class="text-xs badge badge-outline font-mono">CC BY 4.0</span>
+					<h3 class="text-lg font-bold">Henry Barclay Swete Septuagint Edition (1887–1894)</h3>
+					<span class="text-xs badge badge-outline font-mono">Public Domain</span>
 				</div>
 				<p class="text-sm opacity-90">
-					Morphology and token parsing annotations for the Septuagint (LXX) are derived from the
-					<a
-						href="https://github.com/OpenScriptorium/lxx-morph"
+					Base text: Henry Barclay Swete, <em>The Old Testament in Greek according to the Septuagint</em> (Cambridge University Press, 3 vols., 1887–1894; author died 1917). Public domain worldwide. Digital transcription curated by Eliran Wong and collaborators (<a
+						href="https://github.com/eliranwong/LXX-Swete-1930"
 						target="_blank"
 						rel="noopener noreferrer"
-						class="font-medium">OpenScriptorium lxx-morph project</a
-					>. Base text: Alfred Rahlfs, <em>Septuaginta</em> (Stuttgart: Württembergische Bibelanstalt, 1935; Public Domain). Morphological parsing utilizes the Perseus Morpheus engine fork.
+						class="font-medium">eliranwong/LXX-Swete-1930</a
+					>).
+				</p>
+			</div>
+
+			<!-- In-House Greek Morphology Pipeline -->
+			<div class="card bg-base-100 border border-base-300 p-5 shadow-xs">
+				<div class="flex flex-wrap items-baseline justify-between gap-2 mb-1">
+					<h3 class="text-lg font-bold">Septuagint Neural &amp; Rule-Based Morphology Pipeline</h3>
+					<span class="text-xs badge badge-outline font-mono">AGPL-3.0 / CC BY-SA 4.0</span>
+				</div>
+				<p class="text-sm opacity-90">
+					Morphological parsing, POS tagging, and lemmatization generated via the open-source pipeline in this repository (<code>pipeline/swete_morphology/</code>). Powered by Stanford Stanza Ancient Greek neural language models (<code>grc_proiel</code>), contextual biblical proper-name gazetteers, and grammatical canonical unification algorithms.
 				</p>
 			</div>
 

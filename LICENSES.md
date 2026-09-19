@@ -18,9 +18,11 @@ This repository follows a dual-licensing model to distinguish between the **appl
 ### Software Code ([GNU AGPL v3.0](LICENSE))
 The GNU Affero General Public License v3.0 governs all executable source code, scripts, build configurations, and tests in this project, including:
 - `src/` — SvelteKit application routes, components, state stores, and client engines (`VocabEngine.js`, `StaticDatasetProvider.js`, `LsjProvider.js`).
-- `scripts/` — Build and data pipeline scripts (`rebuild_lxx_from_openscriptorium.py`, `build_lsj_dictionary.js`).
+- `pipeline/` — Autonomous Swete Septuagint morphology ingestion, neural parsing, gazetteer, and data emission pipeline.
+- `scripts/` — Dictionary build scripts (`build_lsj_dictionary.js`).
 - `tests/` — Vitest unit and integration test suites.
 - Root configuration files (`package.json`, `svelte.config.js`, `vite.config.js`).
+
 
 ### Data Transformations & Static Assets ([CC BY-SA 4.0](LICENSE-DATA))
 The Creative Commons Attribution-ShareAlike 4.0 International License governs the processed static data assets and indexes generated for runtime search and visualization, including:
