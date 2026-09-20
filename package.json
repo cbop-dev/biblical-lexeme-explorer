@@ -1,6 +1,6 @@
 {
   "name": "biblical-lexeme-explorer",
-  "version": "2.2.11",
+  "version": "2.2.12",
   "repository": "https://github.com/cbop-dev/biblical-lexeme-explorer",
   "type": "module",
   "scripts": {
@@ -42,7 +42,8 @@
     "pipeline:status": "python3 pipeline/run_pipeline.py --status",
     "pipeline:emit": "python3 pipeline/run_pipeline.py --emit",
     "pipeline:resolve": "python3 pipeline/run_pipeline.py --resolve",
-    "pipeline:all": "python3 pipeline/run_pipeline.py --all"
+    "pipeline:all": "python3 pipeline/run_pipeline.py --all",
+    "pipeline:test-gi": "python3 -m pipeline.swete_morphology.gi_bridge"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.2",

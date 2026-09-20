@@ -326,6 +326,10 @@ def build_or_load_gi_cache(
     return _build_gi_cache_from_surfaces(gi, set(), cache_path)
 
 
+# Distinctive verbal inflection endings that do not occur in nominal nominative citations
+VERBAL_ENDINGS = ("ῶ", "οῦμαι", "ιεῖ", "ιοῦμεν", "ιοῦσι", "ιοῦσιν", "εῖται", "οῦνται")
+
+
 def build_gi_cache(
     gi,
     tokens: list[dict],
@@ -361,14 +365,52 @@ def build_gi_cache(
         )
         return cache
 
-    # Collect unique VERB/AUX surfaces
+    # Collect unique candidate verbal surfaces
     verb_surfaces: set[str] = set()
     for t in tokens:
         info = stanza_preds.get(str(t["id"]), {})
-        if info.get("upos") in ("VERB", "AUX"):
-            verb_surfaces.add(_norm(t["surface"]))
+        upos = info.get("upos", "")
+        norm_surf = _norm(t["surface"])
+        if (
+            upos in ("VERB", "AUX")
+            or any(norm_surf.endswith(end) for end in VERBAL_ENDINGS)
+            or upos in ("ADP", "X", "INTJ")
+        ):
+            verb_surfaces.add(norm_surf)
 
     return _build_gi_cache_from_surfaces(gi, verb_surfaces, cache_path)
+
+
+_worker_gi = None
+
+
+def _init_gi_worker(gi_dir_str: str, combined_yaml_path: str):
+    global _worker_gi
+    import sys
+    sys.path.insert(0, gi_dir_str)
+    from greek_inflexion import GreekInflexion  # type: ignore
+    _worker_gi = GreekInflexion(str(Path(gi_dir_str) / "stemming.yaml"), combined_yaml_path)
+
+
+def _parse_surface_worker(surface: str) -> tuple[str, list[dict]]:
+    global _worker_gi
+    if _worker_gi is None:
+        return (surface, [])
+    try:
+        result = _worker_gi.parse(surface)
+    except Exception:
+        result = set()
+
+    if result and all(_is_verbal_code(r[1]) for r in result):
+        seen: set[str] = set()
+        candidates: list[dict] = []
+        for raw_lemma, raw_morph in result:
+            lem = _fix_internal_breathings(_norm(_strip_compound_markers(raw_lemma)))
+            if lem not in seen:
+                seen.add(lem)
+                candidates.append({"lemma": lem, "morph": _translate_morph(raw_morph)})
+        return (surface, candidates)
+    return (surface, [])
 
 
 def _build_gi_cache_from_surfaces(
@@ -376,39 +418,51 @@ def _build_gi_cache_from_surfaces(
     surfaces: set[str],
     cache_path: Path,
 ) -> GiCache:
-    """Run gi.parse() on each surface, write cache JSON, return dict."""
+    """Run gi.parse() across surfaces in parallel, write cache JSON, return dict."""
+    import multiprocessing as mp
+    import yaml
+    from .config import GI_DIR
+
     cache: GiCache = {}
-    total = len(surfaces)
-    print(f"[gi_bridge] Parsing {total:,} unique VERB/AUX surfaces … (this takes a few minutes)")
+    surface_list = sorted(surfaces)
+    total = len(surface_list)
+    num_workers = min(16, max(1, os.cpu_count() or 4))
+    print(f"[gi_bridge] Parsing {total:,} candidate verbal surfaces with {num_workers} parallel workers …")
     t0 = time.perf_counter()
 
-    for i, surface in enumerate(sorted(surfaces), 1):
-        try:
-            result = gi.parse(surface)
-        except Exception:
-            result = set()
+    # Create temporary merged lexicon for worker processes
+    lxx_yaml = GI_DIR / "STEM_DATA" / "lxx_lexicon.yaml"
+    mgnt_yaml = GI_DIR / "STEM_DATA" / "morphgnt_lexicon.yaml"
+    with open(lxx_yaml, encoding="utf-8") as f:
+        lxx_data = yaml.safe_load(f) or {}
+    with open(mgnt_yaml, encoding="utf-8") as f:
+        mgnt_data = yaml.safe_load(f) or {}
+    combined = {**mgnt_data, **lxx_data}
 
-        if result and all(_is_verbal_code(r[1]) for r in result):
-            # Deduplicate by lemma
-            seen: set[str] = set()
-            candidates: list[dict] = []
-            for raw_lemma, raw_morph in result:
-                lem = _fix_internal_breathings(_norm(_strip_compound_markers(raw_lemma)))
-                if lem not in seen:
-                    seen.add(lem)
-                    candidates.append({"lemma": lem, "morph": _translate_morph(raw_morph)})
-            cache[surface] = candidates
-        else:
-            cache[surface] = []  # explicit NO_PARSE — avoids re-parsing on reload
+    tmp = tempfile.NamedTemporaryFile(
+        mode="w", suffix=".yaml", delete=False, encoding="utf-8"
+    )
+    yaml.dump(combined, tmp, allow_unicode=True, default_flow_style=False)
+    tmp.close()
 
-        if i % 500 == 0 or i == total:
-            elapsed = time.perf_counter() - t0
-            rate = i / elapsed
-            remaining = (total - i) / rate if rate > 0 else 0
-            print(
-                f"[gi_bridge]   {i:,}/{total:,} parsed "
-                f"({elapsed:.0f}s elapsed, ~{remaining:.0f}s remaining)"
-            )
+    try:
+        with mp.Pool(
+            num_workers,
+            initializer=_init_gi_worker,
+            initargs=(str(GI_DIR), tmp.name),
+        ) as pool:
+            # Use imap_unordered for fast streaming results with chunksize
+            for idx, (surf, candidates) in enumerate(
+                pool.imap_unordered(_parse_surface_worker, surface_list, chunksize=100), 1
+            ):
+                cache[surf] = candidates
+                if idx % 5000 == 0 or idx == total:
+                    elapsed = time.perf_counter() - t0
+                    rate = idx / elapsed if elapsed > 0 else 0
+                    print(f"[gi_bridge]   {idx:,}/{total:,} parsed ({elapsed:.1f}s, {rate:.1f} surfaces/s)")
+    finally:
+        if os.path.exists(tmp.name):
+            os.unlink(tmp.name)
 
     elapsed_total = time.perf_counter() - t0
     hits = sum(1 for v in cache.values() if v)
@@ -445,19 +499,26 @@ def gi_verb_check(
     -------
     (primary_lemma, primary_morph_code, extra_candidates) on a hit, else None.
 
-    POS agreement gate: only fires when stanza_upos ∈ {VERB, AUX}.
-    This blocks false-positive verb parses on nouns/adjectives missing from
-    the GI lexicon (e.g. πᾶσαν → πάσσω would be blocked because Stanza
-    correctly identifies πᾶσαν as ADJ).
+    POS agreement gate:
+      - Fires when Stanza and GI agree on verbal category (VERB / AUX).
+      - Also fires for high-confidence verbal inflections (e.g. contracted -ῶ, -οῦμαι)
+        or when Stanza assigned an implausible POS (ADP, X, INTJ).
+      - Blocks nouns/adjectives (e.g. πᾶσαν) from falsely matching absent nominals in GI.
     """
     if gi_cache is None or not surface:
         return None
 
-    # POS agreement gate
-    if stanza_upos not in ("VERB", "AUX"):
+    norm_surf = _norm(surface)
+
+    # POS agreement & high-confidence inflection gate
+    is_verb_agreement = stanza_upos in ("VERB", "AUX")
+    is_high_conf_verbal_ending = any(norm_surf.endswith(end) for end in VERBAL_ENDINGS)
+    is_mislabeled_pos = stanza_upos in ("ADP", "X", "INTJ", "SYM")
+
+    if not (is_verb_agreement or is_high_conf_verbal_ending or is_mislabeled_pos):
         return None
 
-    candidates = gi_cache.get(_norm(surface))
+    candidates = gi_cache.get(norm_surf)
     if not candidates:   # None (surface not in cache) or [] (cached NO_PARSE)
         return None
 
@@ -465,3 +526,56 @@ def gi_verb_check(
     extra   = candidates[1:]   # empty when only one distinct lemma
 
     return primary["lemma"], primary["morph"], extra
+
+
+if __name__ == "__main__":
+    import argparse
+    from .config import GI_DIR
+
+    parser = argparse.ArgumentParser(
+        description="Test Greek words using James Tauber's greek-inflexion parser."
+    )
+    parser.add_argument("words", nargs="*", help="Greek word(s) to test (e.g. ἐποίησεν ἀγαπᾷ)")
+    parser.add_argument(
+        "--gi-dir",
+        type=Path,
+        default=GI_DIR,
+        help=f"Path to greek-inflexion repo (default: {GI_DIR})",
+    )
+    args = parser.parse_args()
+
+    gi = load_gi(args.gi_dir)
+    if not gi:
+        print(f"Error: Could not load greek-inflexion from {args.gi_dir}.", file=sys.stderr)
+        sys.exit(1)
+
+    words = args.words or ["ἐποίησεν", "ἀγαπᾷ", "ἤγαγεν", "ἐγένετο", "συνάγει"]
+
+    print(f"\nTesting {len(words)} word(s) with greek-inflexion:")
+    print("=" * 70)
+
+    for word in words:
+        norm_w = _norm(word)
+        try:
+            raw_parses = gi.parse(norm_w)
+        except Exception as e:
+            print(f"\nSurface: '{word}' -> Parse error: {e}")
+            continue
+
+        print(f"\nSurface: '{word}' (normalized: '{norm_w}')")
+        if raw_parses:
+            print("  Parsematches:")
+            for lem, morph in sorted(raw_parses):
+                clean_lem = _fix_internal_breathings(_norm(_strip_compound_markers(lem)))
+                app_morph = _translate_morph(morph)
+                print(f"    ✓ Lemma: {clean_lem:<16} Morph: {app_morph:<12} (raw: {lem}, {morph})")
+        else:
+            print("  ✗ No parse found in greek-inflexion lexicon.")
+            if hasattr(gi, "possible_stems"):
+                stems = list(gi.possible_stems(norm_w))[:5]
+                if stems:
+                    print("  Stem rule hypotheses:")
+                    for morph, stem in stems:
+                        print(f"    ? Stem: {stem:<20} Morph: {morph}")
+    print("\n" + "=" * 70)
+
