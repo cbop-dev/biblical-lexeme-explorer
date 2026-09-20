@@ -32,6 +32,8 @@ from .lexical_rules import (
     SURFACE_LEMMA_OVERRIDES,
     UPOS_TO_APP_POS,
 )
+from .gi_bridge import load_gi, build_gi_cache, gi_verb_check
+from .config import GI_DIR
 
 
 STANZA_OUT_FILE = BUILD_DIR / "swete_stanza.json"
@@ -249,6 +251,11 @@ def resolve():
     tf_word_map = load_tf_word_map()
 
     print(f"Resolving {len(tokens):,} tokens...")
+    _gi_obj    = load_gi(GI_DIR)
+    gi_cache   = build_gi_cache(
+        _gi_obj, tokens, stanza_preds,
+        BUILD_DIR / "gi_verb_cache.json",
+    )
     resolved = []
     stats = Counter()
 
@@ -265,6 +272,10 @@ def resolve():
         s_pos = stanza_info.get("pos", 15)
         s_morph = stanza_info.get("morph", "X")
         s_upos = stanza_info.get("upos", "X")
+
+        # gi_candidates is populated only by Priority 9 when GI returns multiple lemmas.
+        # Initialized here so the field is always defined for the output token logic.
+        extra_candidates: list[dict] = []
 
         # Normalize neural lemma with overrides early
         s_lemma_clean = COMMON_LEMMA_OVERRIDES.get(s_lemma, s_lemma)
@@ -526,14 +537,28 @@ def resolve():
                 source = "stanza_neural"
                 stats["stanza_neural"] += 1
 
-        # 9. Default: general neural tagging
+        # 9. Default: GI verb gate (O(1) cache lookup), falling back to Stanza neural.
+        # gi_verb_check() returns a hit only when:
+        #   (a) The surface has a GI verbal parse in the precomputed cache, AND
+        #   (b) Stanza also tagged it as VERB/AUX (POS agreement gate)
+        # This prevents false-positive verb parses on nouns/adjectives that happen
+        # to match a verbal stem because no nominal entry exists in the GI lexicon.
         else:
-            lemma = s_lemma_clean
-            pos = s_pos
-            morph = s_morph
-            confidence = 0.95 if s_upos != "X" else 0.70
-            source = "stanza_neural"
-            stats["stanza_neural"] += 1
+            gi_hit = gi_verb_check(gi_cache, surface, s_upos)
+            if gi_hit:
+                lemma, morph, extra_candidates = gi_hit
+                pos = 11  # VERB
+                confidence = 0.97
+                source = "gi_verb"
+                stats["gi_verb"] += 1
+            else:
+                lemma = s_lemma_clean
+                pos = s_pos
+                morph = s_morph
+                extra_candidates = []
+                confidence = 0.95 if s_upos != "X" else 0.70
+                source = "stanza_neural"
+                stats["stanza_neural"] += 1
 
         lemma = "".join(c for c in lemma if c not in EDITORIAL_CHARS) or surface
         if lemma in STANZA_MANGLED_FALLBACKS:
@@ -556,6 +581,10 @@ def resolve():
             "confidence": confidence,
             "source": source,
         }
+        # Only write gi_candidates when GI found multiple distinct lemmas,
+        # to keep the file lean for tokens with a single unambiguous parse.
+        if extra_candidates:
+            resolved_token["gi_candidates"] = extra_candidates
         resolved.append(resolved_token)
 
     print("\nResolution Statistics:")

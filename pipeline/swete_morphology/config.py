@@ -11,6 +11,10 @@ SOURCES_DIR = PIPELINE_DIR / "sources" / "LXX-Swete-1930"
 BUILD_DIR = PIPELINE_DIR / "build"
 SCRATCH_DIR = REPO_ROOT.parent / "scratch"
 
+# greek-inflexion repo (read-only). Override with GREEK_INFLEXION_DIR env var.
+import os as _os
+GI_DIR = Path(_os.environ.get("GREEK_INFLEXION_DIR", "/tmp/greek-inflexion"))
+
 SWETE_VERSIFICATION_CSV = SOURCES_DIR / "00-Swete_versification.csv"
 SWETE_WORDS_CSV = SOURCES_DIR / "01-Swete_word_with_punctuations.csv"
 

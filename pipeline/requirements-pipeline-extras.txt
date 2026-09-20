@@ -1,0 +1,5 @@
+inflexion
+greek-accentuation
+pyyaml
+# Also required for greek-inflexion verb gate in swete_morphology/stage5_resolve.py
+# Install with: pip install -r pipeline/requirements-pipeline-extras.txt

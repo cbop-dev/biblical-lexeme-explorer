@@ -1,6 +1,6 @@
 {
   "name": "biblical-lexeme-explorer",
-  "version": "2.2.9",
+  "version": "2.2.10",
   "repository": "https://github.com/cbop-dev/biblical-lexeme-explorer",
   "type": "module",
   "scripts": {
@@ -37,7 +37,12 @@
     "test:e2e": "playwright test",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "chromatic": "npx chromatic --project-token=chpt_22738bde68afc34"
+    "chromatic": "npx chromatic --project-token=chpt_22738bde68afc34",
+    "pipeline": "python3 pipeline/run_pipeline.py",
+    "pipeline:status": "python3 pipeline/run_pipeline.py --status",
+    "pipeline:emit": "python3 pipeline/run_pipeline.py --emit",
+    "pipeline:resolve": "python3 pipeline/run_pipeline.py --resolve",
+    "pipeline:all": "python3 pipeline/run_pipeline.py --all"
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.2",
