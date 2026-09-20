@@ -159,6 +159,20 @@ def run_stage(stage_num: int, target_book: str | None = None, batch_size: int = 
         elapsed = time.time() - t0
         print(f"\n>>> {info['name']} finished successfully in {elapsed:.2f}s.")
         return True
+    except ModuleNotFoundError as e:
+        elapsed = time.time() - t0
+        print(f"\n!!! Dependency missing in {info['name']} after {elapsed:.2f}s: {e}", file=sys.stderr)
+        if "stanza" in str(e):
+            print("\n" + "*" * 70, file=sys.stderr)
+            print("Stage 4 requires the 'stanza' and 'torch' packages for neural NLP tagging.", file=sys.stderr)
+            print("To install them in your active virtual environment, run:", file=sys.stderr)
+            print("    pip install stanza torch", file=sys.stderr)
+            print("\nNote: If 'pipeline/build/swete_stanza.json' already exists, you can skip Stage 4 by running:", file=sys.stderr)
+            print("    python pipeline/run_pipeline.py --all --skip-stanza", file=sys.stderr)
+            print("    # or for fast resolution and web dataset emission:", file=sys.stderr)
+            print("    python pipeline/run_pipeline.py --resolve", file=sys.stderr)
+            print("*" * 70 + "\n", file=sys.stderr)
+        return False
     except Exception as e:
         elapsed = time.time() - t0
         print(f"\n!!! Error in {info['name']} after {elapsed:.2f}s: {e}", file=sys.stderr)
@@ -219,7 +233,7 @@ def main():
     # Preset / Mode options
     group = parser.add_mutually_exclusive_group()
     group.add_argument(
-        "-a", "--all",
+        "-a", "--all", "-all",
         action="store_true",
         help="Run all pipeline stages (1, 2, 4, 5, 8).",
     )
