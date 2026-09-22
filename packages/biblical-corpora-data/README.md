@@ -1,7 +1,7 @@
 # Biblical Corpora Data (`@biblical-data/corpora` / `biblical-data`)
 
 Canonical, schema-validated, and unencumbered open datasets for Biblical scholarship across:
-- **Septuagint (LXX)**: Based on Henry Barclay Swete (1887–1894) with neural & rule-based morphology.
+- **Septuagint (LXX)**: Based on Henry Barclay Swete (1887–1912, reprint 1930) with neural & rule-based morphology.
 - **Greek New Testament (SBLGNT)**: MorphGNT / SBLGNT open dataset.
 - **Hebrew Bible (BHS)**: ETCBC / Text-Fabric morphological dataset.
 - **LSJ Greek-English Lexicon**: Sharded Liddell-Scott-Jones dictionary from Perseus / Logeion.

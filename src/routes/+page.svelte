@@ -9,7 +9,7 @@
 			subtitle: 'Greek Old Testament',
 			badge: 'Greek OT',
 			description:
-				'20,097 Greek lemmas from Henry Barclay Swete’s Septuaginta (1887–1894, Public Domain) with neural and rule-based morphology, Abbott-Smith glosses, Strong’s numbers, and integrated LSJ lexicon.',
+				'20,097 Greek lemmas from Henry Barclay Swete’s Septuaginta (1887–1912, reprint 1930, Public Domain) with neural and rule-based morphology, Abbott-Smith glosses, Strong’s numbers, and integrated LSJ lexicon.',
 			path: `${base}/bible/lxx`,
 			accentClass: 'border-emerald-500/40 hover:border-emerald-500',
 			badgeClass: 'badge-success text-emerald-950 font-bold'

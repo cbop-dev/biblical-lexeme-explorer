@@ -8,14 +8,14 @@ An interactive, high-performance static web application for exploring and analyz
 
 ## Data Provenance & Licensing
 
-All data assets in this repository are derived from unencumbered, openly licensed datasets and public domain resources. For the Septuagint (LXX), this project utilizes **Henry Barclay Swete’s public domain edition** (*The Old Testament in Greek according to the Septuagint*, Cambridge University Press, 1887–1894) with an autonomous neural and rule-based morphology pipeline rather than legally restricted CCAT/CATSS data. Thus, this project can be freely shared, modified, and published under open-source licenses.
+All data assets in this repository are derived from unencumbered, openly licensed datasets and public domain resources. For the Septuagint (LXX), this project utilizes **Henry Barclay Swete’s public domain edition** (*The Old Testament in Greek according to the Septuagint*, Cambridge University Press, 1887–1912, reprint 1930) with an autonomous neural and rule-based morphology pipeline rather than legally restricted CCAT/CATSS data. Thus, this project can be freely shared, modified, and published under open-source licenses.
 
 ### Provenance Architecture & Flow
 
 ```mermaid
 graph TD
     subgraph Upstream_Sources ["Upstream Sources & Public Domain Editions"]
-        SWETE_TEXT["Henry Barclay Swete Septuaginta (1887–1894)<br/><b>Public Domain Worldwide</b><br/>• Cambridge University Press (author d. 1917)<br/>• Transcribed by Eliran Wong & collaborators<br/>• 59 books, 29,649 verses, 608k tokens"]
+        SWETE_TEXT["Henry Barclay Swete Septuaginta (1887–1912, reprint 1930)<br/><b>Public Domain Worldwide</b><br/>• Cambridge University Press (author d. 1917)<br/>• Transcribed by Eliran Wong & collaborators<br/>• 59 books, 29,649 verses, 608k tokens"]
         
         STANZA_NLP["Stanford Stanza Neural NLP<br/><b>Apache 2.0</b><br/>• Ancient Greek Neural Model (grc_proiel)<br/>• Contextual POS tagging & Lemmatization"]
         
@@ -70,7 +70,7 @@ graph TD
 ## Attributions & Upstream Credits
 
 - **LXX Base Text**:
-  - Henry Barclay Swete, *The Old Testament in Greek according to the Septuagint* (Cambridge: Cambridge University Press, 3 vols., 1887–1894; Public Domain worldwide).
+  - Henry Barclay Swete, *The Old Testament in Greek according to the Septuagint* (Cambridge: Cambridge University Press, 3 vols., 1887–1912, reprint 1930; Public Domain worldwide).
   - Digital transcription curated by Eliran Wong and collaborators ([eliranwong/LXX-Swete-1930](https://github.com/eliranwong/LXX-Swete-1930), Public Domain).
 - **LXX Morphology & Lemmatization Pipeline**:
   - Autonomous open-source neural and constraint-satisfaction pipeline (`pipeline/swete_morphology/`).

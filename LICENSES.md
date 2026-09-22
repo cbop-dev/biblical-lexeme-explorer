@@ -39,9 +39,9 @@ The Creative Commons Attribution-ShareAlike 4.0 International License governs th
 This project is deeply grateful to the open-source and digital humanities projects whose unencumbered, openly licensed datasets make this work possible:
 
 ### Septuagint (LXX)
-1. **Henry Barclay Swete Septuagint Edition (1887–1894)**
-   - **License**: **Public Domain worldwide** (published 1887–1894, author Henry Barclay Swete died 1917; fully unencumbered public domain under US, EU, and international copyright).
-   - **Source**: Henry Barclay Swete, *The Old Testament in Greek according to the Septuagint* (Cambridge University Press, 3 vols., 1887–1894).
+1. **Henry Barclay Swete Septuagint Edition (1887–1912, reprint 1930)**
+   - **License**: **Public Domain worldwide** (published 1887–1912, reprint 1930, author Henry Barclay Swete died 1917; fully unencumbered public domain under US, EU, and international copyright).
+   - **Source**: Henry Barclay Swete, *The Old Testament in Greek according to the Septuagint* (Cambridge University Press, 3 vols., 1887–1912, reprint 1930).
    - **Digital Transcription**: Digitized by Eliran Wong and collaborators ([eliranwong/LXX-Swete-1930](https://github.com/eliranwong/LXX-Swete-1930)), dedicated to the public domain.
    - **Lemmatization & Morphology Pipeline**: Built with an open-source neural NLP and constraint-satisfaction pipeline (`pipeline/swete_morphology`) using Stanza Ancient Greek (PROIEL model), proper-name gazetteer heuristics, and lexical normalization rules.
    - **Benchmarking & Validation**: During pipeline development, predictions were evaluated and benchmarked against the [OpenScriptorium/lxx-morph](https://github.com/OpenScriptorium/lxx-morph) dataset (CC BY 4.0), but no data from OpenScriptorium was incorporated into this application's dataset.
