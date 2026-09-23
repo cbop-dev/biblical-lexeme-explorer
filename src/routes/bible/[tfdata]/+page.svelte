@@ -22,14 +22,21 @@
 
 	let options = $derived(data?.options);
 	$effect(() => {
-		if (options?.view?.panel && panes.includes(options.view.panel)) {
-			selectedPane = panes.indexOf(options.view.panel);
+		if (mounted && (selectedPane >=0 && panes.length >selectedPane)){
+			options.view.panel=panes[selectedPane];
 		}
+		
 	});
+	let mounted=$state(false);
 	onMount(() => {
 		if (typeof window !== 'undefined') {
 			window.history.pushState({}, document.title, window.location.pathname);
 		}
+		if (options?.view?.panel && panes.includes(options.view.panel)) {
+			selectedPane = panes.indexOf(options.view.panel);
+		}
+
+		mounted = true;
 	});
 </script>
 

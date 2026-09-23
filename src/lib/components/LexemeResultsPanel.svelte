@@ -193,6 +193,17 @@
 				
 			}
 		},
+		max500ByFreq:{
+			title: "Less common, by freq. ratio",
+			setFilterFunc: () => {
+				lexemeViewFilter.reset();
+				lexemeViewFilter.setMinOrMax(0,500);
+				//lexemeViewFilter.corpusMinMaxRange[1] = 500;
+				//lexemeViewFilter.sectionMinMaxRange[1] = lexemeViewFilter.corpusMinMaxRange[0]; //see comment above. Or don't, and remove this, and suffer for it.
+				currentSortIndex=3;
+				uniqueFilter="color";
+			}
+		},
 		max100:{
 			title: "Uncommon (<100)",
 			setFilterFunc: () => {

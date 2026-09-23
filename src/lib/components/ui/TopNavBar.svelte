@@ -7,7 +7,7 @@
 	 * @type {{ currentVersion?: string }}
 	 */
 	let { currentVersion = 'lxx' } = $props();
-
+	let selectedVersion = $state(currentVersion);
 	const versions = [
 		{ id: 'bhs', label: 'BHS' },
 		{ id: 'lxx', label: 'LXX' },
@@ -15,20 +15,28 @@
 	];
 
 	function onSelectVersion(event) {
-		const targetVersion = event.target.value;
+		const targetVersion = selectedVersion;
+		/*console.log('targetVersion', targetVersion);
+		console.log('currentVersion', currentVersion);
+		*/
 		if (targetVersion && targetVersion !== currentVersion) {
-			goto(`${base}/bible/${targetVersion}`);
+			window.location.assign(`${base}/bible/${targetVersion}`);
+			/*goto(`${base}/bible/${targetVersion}`, { replaceState: true });*/
+		} else {
+			console.log('WHAT??');
 		}
 	}
 </script>
 
-<header class="top-navbar bg-base-100/95 border-b border-base-300 px-3 py-2 sm:px-5 sm:py-2.5 mb-3 shadow-xs">
-	<div class="max-w-7xl mx-auto flex items-center justify-between gap-2">
+<header
+	class="top-navbar shadow-xs mb-3 border-b border-base-300 bg-base-100/95 px-3 py-2 sm:px-5 sm:py-2.5"
+>
+	<div class="mx-auto flex max-w-7xl items-center justify-between gap-2">
 		<!-- Left: Home link -->
 		<div class="flex items-center">
 			<a
 				href="{base}/"
-				class="btn btn-ghost btn-circle btn-xs sm:btn-sm text-base-content/80 hover:text-base-content hover:bg-base-200"
+				class="btn btn-circle btn-ghost btn-xs text-base-content/80 sm:btn-sm hover:bg-base-200 hover:text-base-content"
 				title="Back to Home"
 				aria-label="Back to Home"
 			>
@@ -38,7 +46,7 @@
 					viewBox="0 0 24 24"
 					stroke-width="2"
 					stroke="currentColor"
-					class="w-4 h-4 sm:w-4.5 sm:h-4.5"
+					class="sm:w-4.5 sm:h-4.5 h-4 w-4"
 				>
 					<path
 						stroke-linecap="round"
@@ -51,10 +59,12 @@
 
 		<!-- Center: Title & Version Button -->
 		<div class="flex items-center justify-center text-center">
-			<h1 class="text-sm sm:text-base md:text-lg font-bold tracking-tight inline-flex items-center m-0 p-0 !border-none !no-underline">
+			<h1
+				class="m-0 inline-flex items-center !border-none p-0 text-sm font-bold tracking-tight !no-underline sm:text-base md:text-lg"
+			>
 				<a
 					href="{base}/"
-					class="hover:opacity-85 text-base-content !no-underline whitespace-nowrap"
+					class="whitespace-nowrap text-base-content !no-underline hover:opacity-85"
 				>
 					<span class="sm:hidden">Bible Lexemes</span>
 					<span class="hidden sm:inline">Biblical Lexeme Explorer</span>
@@ -68,7 +78,7 @@
 			<!-- Info Icon Linking to Sources & Licenses -->
 			<a
 				href="{base}/sources-and-licenses"
-				class="btn btn-ghost btn-circle btn-xs sm:btn-sm text-base-content/80 hover:text-base-content hover:bg-base-200"
+				class="btn btn-circle btn-ghost btn-xs text-base-content/80 sm:btn-sm hover:bg-base-200 hover:text-base-content"
 				title="Sources &amp; Licenses"
 				aria-label="Sources &amp; Licenses"
 			>
@@ -78,7 +88,7 @@
 					viewBox="0 0 24 24"
 					stroke-width="1.8"
 					stroke="currentColor"
-					class="w-4.5 h-4.5 sm:w-5 sm:h-5"
+					class="w-4.5 h-4.5 sm:h-5 sm:w-5"
 				>
 					<path
 						stroke-linecap="round"
@@ -91,9 +101,8 @@
 			<!-- Bible Version Dropdown Selector -->
 			<div class="version-select-wrapper">
 				<select
-					class="select select-bordered select-xs sm:select-sm font-semibold text-xs sm:text-xs bg-base-100 cursor-pointer pl-2 pr-6"
-					value={currentVersion}
-					onchange={onSelectVersion}
+					class="select select-bordered select-xs cursor-pointer bg-base-100 p-0 pl-1 pr-1 align-text-top text-xs font-semibold sm:select-sm sm:p-2 sm:text-xs"
+					bind:value={selectedVersion}
 					aria-label="Select Biblical Corpus"
 				>
 					{#each versions as v}
@@ -101,6 +110,7 @@
 					{/each}
 				</select>
 			</div>
+			<button class="btn btn-sm" onclick={onSelectVersion} aria-label="Go">Go!</button>
 		</div>
 	</div>
 </header>
@@ -123,6 +133,6 @@
 
 	.version-select-wrapper select {
 		font-family: inherit;
-		min-width: 6.5rem;
+		min-width: 5rem;
 	}
 </style>
