@@ -20,7 +20,7 @@ const REPO_ROOT = path.resolve(__dirname, '..');
 // Default paths to CEX and index
 const DEFAULT_CEX = '/home/cbrannan/dev/cb/bible-tools/lxx-vocab2/data/cite_lsj_cex/lsj_chicago.cex';
 const DEFAULT_INDEX = '/home/cbrannan/dev/cb/bible-tools/lxx-vocab2/data/cite_lsj_cex/lsj_index.txt';
-const OUT_DIR = path.join(REPO_ROOT, 'static', 'data', 'dictionary');
+const OUT_DIR = path.join(REPO_ROOT, 'static', 'data', 'lexicons', 'lsj');
 
 // ----------------------------------------------------
 // 1. Greek Normalization & Diacritics

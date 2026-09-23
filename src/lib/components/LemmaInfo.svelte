@@ -31,6 +31,7 @@ That is, the <LemmaInfo> tag should be surrounded by tags such as : {#key lemma 
 	import { mylog } from "$lib/env/env.js"
 	import Loading from './ui/Loading.svelte';
 	import LSJEntry from './LSJEntry.svelte';
+	import BDBEntry from './BDBEntry.svelte';
 
 	/**
 	 * @typedef LemmaInfoProps
@@ -225,9 +226,13 @@ That is, the <LemmaInfo> tag should be surrounded by tags such as : {#key lemma 
 		ID: {lemma.id}{#if lemma.strongs}; Strongs: {lemma.strongs}{/if}
 	</span>
 
-	{#if tfData?.lang === 'greek' || tfData?.dbAbbrev !== 'bhs'}
+	{#if tfData?.lang === 'greek' || (tfData?.dbAbbrev !== 'bhs' && tfData?.lang !== 'hebrew')}
 		<div class="max-w-xl mx-auto px-2">
 			<LSJEntry {lemma} lang={tfData?.lang || 'greek'} dbAbbrev={tfData?.dbAbbrev || 'lxx'} />
+		</div>
+	{:else if tfData?.dbAbbrev === 'bhs' || tfData?.lang === 'hebrew'}
+		<div class="max-w-xl mx-auto px-2">
+			<BDBEntry {lemma} lang={tfData?.lang || 'hebrew'} dbAbbrev={tfData?.dbAbbrev || 'bhs'} />
 		</div>
 	{/if}
 

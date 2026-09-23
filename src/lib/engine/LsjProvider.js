@@ -87,11 +87,11 @@ export class LsjProvider {
 					try {
 						const fs = await import('node:fs/promises');
 						const path = await import('node:path');
-						const filePath = path.resolve(process.cwd(), 'static', 'data', 'dictionary', `${bucket}.json`);
+						const filePath = path.resolve(process.cwd(), 'static', 'data', 'lexicons', 'lsj', `${bucket}.json`);
 						const content = await fs.readFile(filePath, 'utf-8');
 						return JSON.parse(content);
 					} catch (fsErr) {
-						const url = `/data/dictionary/${bucket}.json`;
+						const url = `/data/lexicons/lsj/${bucket}.json`;
 						const res = await fetch(url);
 						if (!res.ok) return {};
 						return await res.json();
@@ -99,7 +99,7 @@ export class LsjProvider {
 				} else {
 					// Browser environment
 					const basePath = base || '';
-					const url = `${basePath}/data/dictionary/${bucket}.json`;
+					const url = `${basePath}/data/lexicons/lsj/${bucket}.json`;
 					const res = await fetch(url);
 					if (!res.ok) return {};
 					return await res.json();
