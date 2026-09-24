@@ -140,17 +140,17 @@
 	>
 		<h3 class="mb-2 text-lg font-bold">Open Source &amp; Open Data</h3>
 		<p class="mx-auto mb-4 max-w-2xl text-sm opacity-80">
-			Biblical Lexeme Explorer is built on fully open-source code (<a
+			Biblical Lexeme Explorer is built on open-source code (<a
 				href="https://www.gnu.org/licenses/agpl-3.0.html"
 				target="_blank"
 				rel="noopener noreferrer"
 				class="link font-semibold">AGPL-3.0</a
-			>) and openly licensed, unencumbered scholarship (<a
+			>) and variously open-licensed Biblical datasets (<a
 				href="https://creativecommons.org/licenses/by-sa/4.0/"
 				target="_blank"
 				rel="noopener noreferrer"
 				class="link font-semibold">CC BY-SA 4.0</a
-			>).
+			> and <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0 (BHS)</a>).
 		</p>
 		<div>
 			<a href="{base}/sources-and-licenses" class="btn btn-outline btn-sm gap-2">

@@ -78,12 +78,15 @@
 			class="card flex flex-col justify-between border border-base-300 bg-base-100 p-6 shadow-md"
 		>
 			<div>
-				<div class="mb-4 flex items-center justify-between gap-3">
+				<div class="mb-4 flex flex-wrap items-center justify-between gap-3">
 					<h2 class="text-xl font-bold">Curated Datasets &amp; Static Indexes</h2>
 					<span
-						class="badge badge-primary shrink-0 whitespace-nowrap px-3 py-1.5 font-mono text-xs font-semibold"
+						class="badge badge-primary shrink-0 whitespace-nowrap px-3 py-1.5 font-mono text-xs font-semibold flex-1"
 						>CC BY-SA 4.0</span
-					>
+					> or 
+					<a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank" ><span
+						class="badge badge-primary shrink-0 whitespace-nowrap px-3 py-1.5 font-mono text-xs font-semibold hover:bg-white hover:text-black"
+						>CC BY-NC 4.0 (BHS)</span></a>
 				</div>
 				<p class="mb-3 text-sm opacity-90">
 					The curated static datasets, pre-compiled lemma search indexes, concordance structures,
@@ -94,7 +97,9 @@
 						rel="noopener noreferrer"
 						class="font-medium"
 						>Creative Commons Attribution-ShareAlike 4.0 International (CC BY-SA 4.0)</a
-					>.
+					> for everything except the BHS data which is license with the  <a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank"
+						rel="noopener noreferrer"
+						class="font-medium">Creative Commons Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)</a>.
 				</p>
 				<ul class="mb-4 list-inside list-disc space-y-1 text-xs opacity-80">
 					<li>
@@ -122,12 +127,12 @@
 					View CC BY-SA 4.0 Deed
 				</a>
 				<a
-					href="{APP_REPO}/blob/main/LICENSE-DATA"
+					href="https://creativecommons.org/licenses/by-nc/4.0/"
 					target="_blank"
 					rel="noopener noreferrer"
-					class="btn btn-ghost btn-xs"
+					class="btn btn-outline btn-xs"
 				>
-					View LICENSE-DATA
+					View CC BY-NC 4.0 Deed
 				</a>
 			</div>
 		</div>
@@ -139,8 +144,8 @@
 			Underlying Datasets &amp; Attributions
 		</h2>
 		<p class="text-sm opacity-80">
-			This project is deeply grateful to the open-source and digital humanities projects whose
-			unencumbered, openly licensed datasets make this work possible:
+			The developer(s) is(are) grateful to the digital humanities projects whose
+			open-licensed datasets make this work possible:
 		</p>
 
 		<div class="space-y-4">
@@ -247,8 +252,8 @@
 			<!-- BHS Hebrew Bible / ETCBC -->
 			<div class="shadow-xs card border border-base-300 bg-base-100 p-5">
 				<div class="mb-1 flex flex-wrap items-baseline justify-between gap-2">
-					<h3 class="text-lg font-bold">Biblia Hebraica Stuttgartensia (BHS / ETCBC)</h3>
-					<span class="badge badge-outline font-mono text-xs">CC BY-NC 4.0 / CC BY-SA 4.0</span>
+					<h3 class="text-lg font-bold">Biblia Hebraica Stuttgartensia Amstelodamensis (BHS / ETCBC)</h3>
+					<span class="badge badge-outline font-mono text-xs"><a href="https://creativecommons.org/licenses/by-nc/4.0/" target="_blank">CC BY-NC 4.0</a></span>
 				</div>
 				<p class="text-sm opacity-90">
 					Hebrew Bible morphological and syntactic data developed by the
@@ -256,6 +261,8 @@
 						>Eep Talstra Centre for Bible and Computer</a
 					> (Vrije Universiteit Amsterdam).
 				</p>
+
+				
 			</div>
 
 			<!-- SBLGNT & MorphGNT -->

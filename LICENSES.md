@@ -9,7 +9,9 @@ This repository follows a dual-licensing model to distinguish between the **appl
 | Component | License | License File | Description |
 |---|---|---|---|
 | **Application Software** | **GNU AGPL v3.0** | [LICENSE](LICENSE) | Covers all frontend UI code, engine logic, extraction scripts, and test suites. |
-| **Data & Static Assets** | **CC BY-SA 4.0** | [LICENSE-DATA](LICENSE-DATA) | Covers all static JSON datasets, lexeme indexes, concordance tables, and dictionaries. |
+| **Data & Static Assets** |
+|Everything except BHS | **CC BY-SA 4.0** | [LICENSE-DATA](LICENSE-DATA) | Covers all static Bible text data except the BHS data|
+|BHS text, lemma and morphology data|[CC BY-NC 4.0](https://creativecommons.org/licenses/by-nc/4.0/)||Commercial use prohibited.|
 
 ---
 
@@ -36,7 +38,7 @@ The Creative Commons Attribution-ShareAlike 4.0 International License governs th
 
 ## 3. Upstream Data Provenance & Attribution
 
-This project is deeply grateful to the open-source and digital humanities projects whose unencumbered, openly licensed datasets make this work possible:
+The developer(s) is(are) grateful to the digital humanities projects whose open licensed datasets make this work possible:
 
 ### Septuagint (LXX)
 1. **Henry Barclay Swete Septuagint Edition (1887–1912, reprint 1930)**
@@ -63,20 +65,22 @@ This project is deeply grateful to the open-source and digital humanities projec
    - **Digital Editions**: Perseus Digital Library (Tufts University) and Logeion / University of Chicago CEX edition (Giuseppe Celano).
 
 ### Hebrew Bible (BHS)
-- **ETCBC / Text-Fabric**: Hebrew morphological dataset developed by the Eep Talstra Centre for Bible and Computer (Vrije Universiteit Amsterdam).
+1. **ETCBC / Text-Fabric**: Hebrew morphological dataset developed by the Eep Talstra Centre for Bible and Computer (Vrije Universiteit Amsterdam).
+   - **Source**: The Eep Talstra Centre for Bible and Computer's [Biblia Hebraica Stuttgartensia (Amstelodamensis) project on github](https://github.com/ETCBC/bhsa)
+   - **License**: [Attribution-NonCommercial 4.0 International (CC BY-NC 4.0)](https://creativecommons.org/licenses/by-nc/4.0/).
 
 ### Greek New Testament (SBLGNT)
-- **SBL Greek New Testament**: Edited by Michael W. Holmes, Copyright 2010 Society of Biblical Literature and Logos Bible Software ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
-- **MorphGNT**: Morphological parsing by James Tauber ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
+1. **SBL Greek New Testament**: Edited by Michael W. Holmes, Copyright 2010 Society of Biblical Literature and Logos Bible Software ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
+2.  **MorphGNT**: Morphological parsing by James Tauber ([CC BY 4.0](https://creativecommons.org/licenses/by/4.0/)).
 
 ### UI & Ergonomic Tools
-- **OpenScriptorium Reading Theme Architecture**:
+1. **OpenScriptorium Reading Theme Architecture**:
   - **License**: [ISC License](https://opensource.org/licenses/ISC)
   - **Source**: [https://openscriptorium.org](https://openscriptorium.org)
   - **Description**: Contrast-invariant piecewise color stop interpolation algorithm and sliding scale reading theme selector concept.
 
 ### AI Engineering & Development Tools
-- **Google DeepMind Antigravity 2.0 & Gemini**:
+1. **Google DeepMind Antigravity 2.0 & Gemini**:
   - The application developer used Google DeepMind's Antigravity 2.0 and Gemini models in the development of this project.
 
 ---

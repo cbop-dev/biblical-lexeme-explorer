@@ -8,7 +8,7 @@ An interactive, high-performance static web application for exploring and analyz
 
 ## Data Provenance & Licensing
 
-All data assets in this repository are derived from unencumbered, openly licensed datasets and public domain resources. For the Septuagint (LXX), this project utilizes **Henry Barclay Swete’s public domain edition** (*The Old Testament in Greek according to the Septuagint*, Cambridge University Press, 1887–1912, reprint 1930) with an autonomous neural and rule-based morphology pipeline rather than legally restricted CCAT/CATSS data. Thus, this project can be freely shared, modified, and published under open-source licenses.
+All data assets in this repository are derived from  datasets with various types of open licenses which allow (minimally) for non-commericial use. For details, see the [LICENSES.md page](LICENSES.md).For the Septuagint (LXX), this project utilizes **Henry Barclay Swete’s public domain edition** (*The Old Testament in Greek according to the Septuagint*, Cambridge University Press, 1887–1912, reprint 1930) with an autonomous neural and rule-based morphology pipeline rather than legally restricted CCAT/CATSS data. 
 
 ### Provenance Architecture & Flow
 
